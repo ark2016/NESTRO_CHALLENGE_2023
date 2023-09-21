@@ -15,7 +15,7 @@ def conditionME075(R_H_1, R_H_2, m2, m3):
     return (R_H_2 * m3) / (R_H_1 * m2) >= .75
 
 
-# ОСТ 153-39.4-010-2002 8 страница (4.1) (4.2)
+# ОСТ 153-39.4-010-2002 | 8 страница (4.1) (4.2)
 def pipe_wall_thickness_for_decommissioning(R_H_1: float, R_H_2: float, P: float, alfa: float, D_h: float, k1: float,
                                             m2: float) -> float:
     """
@@ -48,7 +48,7 @@ def pipe_wall_thickness_for_decommissioning(R_H_1: float, R_H_2: float, P: float
     return pipe_wall_thickness
 
 
-# допустимое давление ОСТ 153-39.4-010-2002 9 страница (4.3) (4.4)
+# допустимое давление ОСТ 153-39.4-010-2002 | 9 страница (4.3) (4.4)
 def permissible_pressure_func(t: float, R_H_2: float, R_H_1: float, m2: float, alfa: float, D_n: float,
                               k1: float) -> float:
     """
@@ -75,9 +75,11 @@ def permissible_pressure_func(t: float, R_H_2: float, R_H_1: float, m2: float, a
     return permissible_pressure
 
 # Расчёты напряжённо-деформированного состояния трубопроводов
-# ОСТ 153-39.4-010-2002 16 страница (6,1) Проверочный расчет толщины стенки трубопровода, а также её
+# ОСТ 153-39.4-010-2002 | 16 страница (6,1) Проверочный расчет толщины стенки трубопровода, а также её
 # определение в случае ремонта
-def check_calculation_of_pipeline_wall_thickness(gamma_f: float, P: float, D_h: float, contains_hydrogen_sulfide: bool, R_H_1: float, R_H_2: float, m2: float, gamma_m: float, gamma_n: float, gamma_s: float) -> float:
+def check_calculation_of_pipeline_wall_thickness(gamma_f: float, P: float, D_h: float,
+                                                 contains_hydrogen_sulfide: bool, R_H_1: float, R_H_2: float,
+                                                 m2: float, gamma_m: float, gamma_n: float, gamma_s: float) -> float:
     """
     :param gamma_f:
     k: коэффициент несущей способности труб и соединительных до талей, значение которого принимается согласно
@@ -102,7 +104,7 @@ def check_calculation_of_pipeline_wall_thickness(gamma_f: float, P: float, D_h: 
 
 #(6.2)
 #Проверка общей устойчивости подземного трубопровода в продольном направлении
-def checking_stability_of_underground_pipeline_in_longitudinal_direction(S, m2, N_cp) -> bool:
+def checking_stability_of_underground_pipeline_in_longitudinal_direction(S: float, m2: float, N_cp: float) -> bool:
     """
     :param S: эквивалентное продольное осевое усилие в трубопроводе, возникаю шее от действия расчетных нагрузок и
     воздействий с учетом продольных и поперечных перемещений трубопровода
@@ -112,3 +114,56 @@ def checking_stability_of_underground_pipeline_in_longitudinal_direction(S, m2, 
     :return: Проверка общей устойчивости подземного трубопровода в продольном направлении
     """
     return S <= m2 * N_cp
+
+#Расчёт остаточного ресурса трубопровода по минимальной вероят ной толщине стенки труб по результатам диагностики
+#ОСТ 153-39.4-010-2002 | 19 страница (7.1)
+def standard_deviation_sigma(N: int, t_k: list, t_cp: float) -> float:
+    """
+    :param N: число участков замера
+    :param t_k: результаты измерений толщин нак-х участках поверхности
+    :param t_cp: средняя измеренная толщина
+    :return: Среднее квадратическое отклонение
+    """
+    sum_of_squares = 0
+    for k in range(N):
+        sum_of_squares += (t_k[k] - t_cp)**2
+    sigma = (sum_of_squares / (N - 1))**.5
+    return sigma
+
+#(7.2)
+#Минимальную возможную толщину стенки с учетом пеконтролиро ванных участко в поверхности определяют для доверительной
+# вероятности 95% применительно но всем промысловым трубопроводам по формуле
+def minimum_possible_wall_thickness(t_cp: float, sigma: float, t_k: list, increased_accuracy:bool = False) -> float:
+    """
+    :param t_cp: средняя измеренная толщина
+    :param sigma: Среднее квадратическое отклонение
+    :return: Минимальную возможную толщину стенки
+    """
+    t_min = t_cp - 2 * sigma
+    if increased_accuracy:
+        for i in t_k:
+            t_min = min(t_min, i)
+    return t_min
+#(7.3)
+#Средняя скорость коррозии стенки трубопровода
+def average_corrosion_rate_of_pipeline_wall(t_n: float, t_min: float, tau: float) -> float:
+    """
+    :param t_n: номинальная толщина стенки
+    :param t_min: Минимальную возможную толщину стенки
+    :param tau: время эксплуатации трубопровода, лет
+    :return: Средняя скорость коррозии стенки трубопровода
+    """
+    V_cp = (t_n - t_min) / tau
+    return V_cp
+
+#(7,4)
+#Остаточный ресурс трубопровода
+def residual_life_of_pipeline(t_min: float, t_otb: float, V_cp: float ) -> float:
+    """
+    :param t_min: Минимальную возможную толщину стенки
+    :param t_otb: толщина стенки трубы или детали трубопровода, м, при которой они должны быть изъяты из эксплуатации
+    :param V_cp: Средняя скорость коррозии стенки трубопровода
+    :return:
+    """
+    tau_ost = (t_min - t_otb) / V_cp
+    return tau_ost
