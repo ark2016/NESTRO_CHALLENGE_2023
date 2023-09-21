@@ -2,7 +2,7 @@ from socket import *
 import sys
 
 host = '127.0.0.1'
-port = 8081
+port = 8080
 addr = (host,port)
 
 
