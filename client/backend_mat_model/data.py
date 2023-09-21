@@ -2,9 +2,13 @@ import pandas as pd
 import numpy as np
 
 # const
+#(4.1-4.4)
 n = 1.2
 m1 = 0.8
 m3 = 1
+
+#(6.1)
+k = 1
 
 
 def conditionME075(R_H_1, R_H_2, m2, m3):
@@ -45,7 +49,8 @@ def pipe_wall_thickness_for_decommissioning(R_H_1: float, R_H_2: float, P: float
 
 
 # допустимое давление ОСТ 153-39.4-010-2002 9 страница (4.3) (4.4)
-def permissible_pressure_func(t, R_H_2, R_H_1, m2, alfa, D_n, k1) -> float:
+def permissible_pressure_func(t: float, R_H_2: float, R_H_1: float, m2: float, alfa: float, D_n: float,
+                              k1: float) -> float:
     """
     :param t: толщина стенки трубы, м (не указано)
     :param R_H_2: нормативное сопротивление, равное наименьшему значению предела текучести при растяжении, сжатии и
@@ -68,3 +73,42 @@ def permissible_pressure_func(t, R_H_2, R_H_1, m2, alfa, D_n, k1) -> float:
     else:
         permissible_pressure = (1.8 * R_H_2 * m3) / (n * (alfa * D_n - 2 * t))
     return permissible_pressure
+
+# Расчёты напряжённо-деформированного состояния трубопроводов
+# ОСТ 153-39.4-010-2002 16 страница (6,1) Проверочный расчет толщины стенки трубопровода, а также её
+# определение в случае ремонта
+def check_calculation_of_pipeline_wall_thickness(gamma_f: float, P: float, D_h: float, contains_hydrogen_sulfide: bool, R_H_1: float, R_H_2: float, m2: float, gamma_m: float, gamma_n: float, gamma_s: float) -> float:
+    """
+    :param gamma_f:
+    k: коэффициент несущей способности труб и соединительных до талей, значение которого принимается согласно
+    СП 34-116-97 (для труб, заглушек и переходов - 1)
+    :param P: -//-
+    :param D_h: -//-
+    :param contains_hydrogen_sulfide:
+    :param R_H_1: -//-
+    :param R_H_2: -//-
+    :param m2: коэффициент условий работы трубопровода
+    :param gamma_m: коэффициент надежности по материалу
+    :param gamma_n: коэффициент надежности по назначению трубопроводов
+    :param gamma_s: коэффициент надежности по нагрузке
+    :return: расчет толщины стенки трубопровода
+    """
+    if contains_hydrogen_sulfide:
+        R = min((R_H_1 * m2) / (gamma_m * gamma_n), (R_H_2 * m2) / (0.9 * gamma_n))
+    else:
+        R = R_H_2 * gamma_s / gamma_n
+    calculation_of_pipeline_thickness = (gamma_f * k * P * D_h) / (2 * (R + 0.6 * gamma_f * P))
+    return calculation_of_pipeline_thickness
+
+#(6.2)
+#Проверка общей устойчивости подземного трубопровода в продольном направлении
+def checking_stability_of_underground_pipeline_in_longitudinal_direction(S, m2, N_cp) -> bool:
+    """
+    :param S: эквивалентное продольное осевое усилие в трубопроводе, возникаю шее от действия расчетных нагрузок и
+    воздействий с учетом продольных и поперечных перемещений трубопровода
+    :param m2: коэффициент условий работы трубопровода
+    :param N_cp: продольное критическое усилие, при котором наступает потеря про- дольной устойчивости трубопровода,
+    с учетом принятого конструктивного ре шения трубопровода.
+    :return: Проверка общей устойчивости подземного трубопровода в продольном направлении
+    """
+    return S <= m2 * N_cp
