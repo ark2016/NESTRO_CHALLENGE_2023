@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Домашняя страница</title>
+    <link rel="stylesheet" href="/server/ui/static/css/styles.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 </head>
 <body>
+	<div class="navbar">
+		<a href="/home" class="underline-one">Главная</a>
+		<a href="/home" class="underline-one">Неглавная</a>
+	</div>
 	<h1>Это наш прекрасный сайт с интерактивными графиками</h1>
 	<p>Здесь очень крутое описание нашего решения, сгенерированное с помощью GigaChat</p>
 	<div id = "container"></div>
@@ -47,8 +52,5 @@
 		// Append the SVG element.
 		container.append(svg.node());
 	</script>
-<center>
-  тут ничего нет, уйди на другой сайт
-</center>
 </body>
 </html>
