@@ -1,13 +1,18 @@
-package main
+package web
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"syscall"
 )
 
-func main() {
+// web сервер запускается из файла server.go
+
+func Web() {
+	Print_thread_id()
 	addr := flag.String("addr", ":4000", "Сетевой адрес веб-сервера")
 	flag.Parse()
 
@@ -30,4 +35,10 @@ func main() {
 	infoLog.Printf("Запуск сервера на %s", *addr)
 	err := http.ListenAndServe(*addr, mux)
 	errorLog.Fatal(err)
+}
+
+func Print_thread_id() int {
+	tid := syscall.Getgid()
+	fmt.Printf("Thread ID: %v\n", tid)
+	return tid
 }

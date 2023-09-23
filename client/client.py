@@ -12,7 +12,7 @@ while(True):
     data = input('write to server: ')
     if data=='break':
         break
-    data+="\n"
+    #data+="\n"
     if not data :
         tcp_socket.close()
         sys.exit(1)
@@ -20,8 +20,9 @@ while(True):
     #encode - перекодирует введенные данные в байты, decode - обратно
     data = str.encode(data)
     tcp_socket.send(data)
-    data = bytes.decode(data)
+    data = bytes.decode(data,"utf-8")
     data = tcp_socket.recv(1024)
+    data = bytes.decode(data, "utf-8")
     print(data)
 
 tcp_socket.close()
