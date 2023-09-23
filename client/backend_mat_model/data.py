@@ -128,7 +128,7 @@ def standard_deviation_sigma(N: int, t_k: list, t_cp: float) -> float:
     :return: Среднее квадратическое отклонение
     """
     sum_of_squares = 0
-    for k in range(1, N):
+    for k in range(N):
         sum_of_squares += (t_k[k] - t_cp) ** 2
     sigma = (sum_of_squares / (N - 1)) ** .5
     return sigma
@@ -253,7 +253,7 @@ def average_relative_wear_of_pipeline(t_k: list, t_nk: list, N_i: int) -> float:
     :return:
     """
     sigma = 0
-    for k in range(1, N_i):
+    for k in range(N_i):
         sigma += 1 - t_k[k] - t_nk[k]
     delta_icp = 1 / N_i * sigma
     return delta_icp
@@ -275,7 +275,7 @@ def statistical_estimate_of_standard_deviation_of_a(delta_cp, tau_d, t_n, t_k: l
     """
     a_cp = delta_cp / tau_d ** m
     sigma = 0
-    for i in range(1, N):
+    for i in range(N):
         delta_k = (t_n - t_k[k]) / t_n
         sigma += (delta_k ** 2 - S_0 ** 2) / tau_i[k] ** (2 * m) - a_cp ** 2
     S_a = (1 / (N - 1) * sigma) ** .5
@@ -318,9 +318,10 @@ g = 9.81
 e = np.e
 pi = np.pi
 # коэффициент кинематической вязкости воды
-nu_v = 10**(-6)
+nu_v = 10 ** (-6)
 
-#2.8.1 c. 6 (1-2)
+
+# 2.8.1 c. 6 (1-2)
 # условный диаметр трубопровода, обеспечивающий антикоррозионный режим течения жидкости
 def nominal_pipeline_diameter(mu_h, Q_cm, nu_c, ro_c, beta, sigma, ro_b, ro_e, ro_h, nu_h) -> float:
     """
@@ -340,20 +341,21 @@ def nominal_pipeline_diameter(mu_h, Q_cm, nu_c, ro_c, beta, sigma, ro_b, ro_e, r
         D_kr = ((Q_cm * nu_c ** 0.0733 * ro_c ** 0.536 * (-10.96 * beta ** 2 + 9.94 * beta + 1) ** 0.659) /
                 (5.254 * sigma ** 0.171 * (g * (ro_b - ro_e)) ** 0.366)) ** 0.441
     else:
-        D_kr = ((Q_cm * ro_h**0.615 * nu_h**0.231) /
-                (1.916 * sigma**0.41 * (g * (ro_b - ro_e))**0.205 * e**(2.22 * beta**7.63)))**0.494
+        D_kr = ((Q_cm * ro_h ** 0.615 * nu_h ** 0.231) /
+                (1.916 * sigma ** 0.41 * (g * (ro_b - ro_e)) ** 0.205 * e ** (2.22 * beta ** 7.63))) ** 0.494
     return D_kr
 
-# максимальной длины ветви нефтесбора
-#D_kr = nominal_pipeline_diameter(...)
 
-#Значение максимальной длины ветви Lmax является
+# максимальной длины ветви нефтесбора
+# D_kr = nominal_pipeline_diameter(...)
+
+# Значение максимальной длины ветви Lmax является
 # расстоянием от пункта сбора до наиболее удаленного куста,
 # продукция которого собирается на данный пункт. Расстановка
 # пунктов сбора с лимитированной длиной ветви обеспечивает
 # работу трубопроводов в антикоррозионном режиме на
 # 85— 100% участков системы нефтегазосбора, то есть позволяет наиболее эффективно использовать технологические методы защиты от коррозии.
-#РД 39-0147323-339-89-Р
+# РД 39-0147323-339-89-Р
 def calculation_of_max_len_of_oil_collection_branch(delta_P, D_kr, beta, Q_cm, ro_e, lambda_cm) -> float:
     """
     :param delta_P: перепад давления на ветви, Па;
@@ -364,10 +366,11 @@ def calculation_of_max_len_of_oil_collection_branch(delta_P, D_kr, beta, Q_cm, r
     :param lambda_cm: коэффициент гидравлического сопротивления смеси, рассчитываемый в соответствии с ВСН 2.38 85.
     :return: расчет максимальной длины ветви нефтесбора
     """
-    L_max = (delta_P * D_kr * pi**2 * (1 - beta)) / (8 * Q_cm**2 * ro_e * lambda_cm)
+    L_max = (delta_P * D_kr * pi ** 2 * (1 - beta)) / (8 * Q_cm ** 2 * ro_e * lambda_cm)
     return L_max
 
-#Критическая скорость выноса рыхлых осадков водной фазой расслоенного потока
+
+# Критическая скорость выноса рыхлых осадков водной фазой расслоенного потока
 def critical_drift_speed(ro_h, ro_b, S, psi, D) -> float:
     """
     :param ro_h: плотность осадка кг/м^3
@@ -380,5 +383,67 @@ def critical_drift_speed(ro_h, ro_b, S, psi, D) -> float:
     10**(-3)
     :return: Критическая скорость выноса рыхлых осадков водной фазой расслоенного потока
     """
-    U_kp = 710 * (nu_v * (ro_h - ro_b) / ro_b)**(1 / 3) * (S * psi)**(1 / 6) * D**(1 / 3)
+    U_kp = 710 * (nu_v * (ro_h - ro_b) / ro_b) ** (1 / 3) * (S * psi) ** (1 / 6) * D ** (1 / 3)
     return U_kp
+
+
+# Если по отдельному участку нефтесбора отсутствуют данные анализа воды, допускается рассчитывать их по сред ним
+# химическим составам вод различных пластов и объемам их добычи или по химическому составу вод всех скважин и их
+# дебитам с использованием аддитивных зависимостей
+
+def get_water_analysis_data_available(n, marr: list, qarr: list) -> float:
+    """
+    :param n:
+    :param marr:значения определяемого фактора для каждого пласта;
+    :param qarr: Объем воды данного пласта, поступающей в трубо провод
+    :return:
+    """
+    MQ = 0
+    Q = 0
+    for i in range(n):
+        MQ += marr[i] * qarr[i]
+        Q += qarr[i]
+    M_cp = MQ / Q
+    return M_cp
+
+#Расчет максимальной скорости коррозии
+# параметры беруться из таблицы 2 РД 39-0147323-339-89-Р
+def calculation_of_max_corrosion_rate(K_Cl, K_HCO3, K_Ca, K_pH, K_p, K_v_cm, K_v_cm_v_kp) -> float:
+    K_x = K_Cl * K_HCO3 * K_Ca * K_pH
+    K_r = K_p * K_v_cm * K_v_cm_v_kp
+    ro_max = K_x * K_r
+    return ro_max
+
+# Существование антикоррозионного режима 16 c
+
+
+#Алгоритм расчета
+#среднее давление на участке. Па
+
+def average_pressure_in_area(P_n, P_k) -> float:
+    P_cp = (P_n - P_k) / 2
+    return P_cp
+
+
+#20 c
+
+
+#Расчет параметров при прогнозировании аварий и отбраковке трубопроводов
+#Для оценки возможности возникновения аварии в n-м году с начала эксплуатации рассчитывается величина
+def assessing_possibility_of_accident(n, K:list, ro_max, sigma_ct) -> float:
+    """
+    :param n: годы эксплуатации
+    :param K: коэффициент, учитывающий применение ингибиторов коррозии в 1-м году;
+    в случае ингибирования К. = 0,3; без ингибирования К = 1
+    :param ro_max: максимально возможная при данных физико-хими- ческих свойствах среды и гидродинамических параметрах
+    движения смеси скорость коррозии, характеризующая локальные коррозионные поражения в 1-м году,
+    мм/год (см. приложение 1)
+    :param sigma_ct: толщина стенки трубопровода, мм
+    :return:
+    """
+    sigma = 0
+    for i in range(n):
+        sigma += K[i] * ro_max
+    P_n = sigma_ct - sigma
+    return P_n
+
