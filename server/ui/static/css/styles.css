@@ -53,6 +53,9 @@ a {
     margin: 5px; /* определяет поле (пробел) за пределами границы */
     text-align: center; /* определяет выравнивание */
 }
+table{
+	border: 1px solid black
+}
 
 
 .underline-one {
@@ -158,6 +161,3 @@ li a:hover:not(.active) {
     color: white;
 }
 
-table{
-	border: 1px solid black
-}
