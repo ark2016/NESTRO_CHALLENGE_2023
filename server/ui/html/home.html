@@ -166,8 +166,16 @@
 		}
 
 		table{
-			border: 1px solid black
+			border: 1px solid black;
+			color: black;
+			background-color: aquamarine;
+			width: 100%;
 		}
+		td{
+			border: 3.5px solid black;
+			padding: 5px;
+		}
+
 	</style>
     <link rel="stylesheet" href="/server/ui/static/css/styles.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -184,15 +192,23 @@
 	
 	<div id = "container"></div>
 	
-	<table style="width:100%">
-		<tr style="height=500px">
+	<table>
+		<tr>
+			<td id= "data_container">
+				Красивая колонка
+			</td>
+			<td id= "data_container2">
+				Красивая колонка
+			</td>
+			<td id= "data_container3">
+				Красивая колонка
+			</td>
+		</tr>
+		<tr>
 			<td>
 				<table id = "pipe_container">
 
 				</table>
-			</td>
-			<td id= "data_container">
-				Красивая таблица
 			</td>
 		</tr>
 	</table>
@@ -242,5 +258,8 @@
 				pipe_container.appendChild(s);
 			} )
 	</script>
+<script>
+
+</script>
 </body>
 </html>
