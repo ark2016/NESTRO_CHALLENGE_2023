@@ -11,7 +11,13 @@ import (
 
 // web сервер запускается из файла server.go
 
-func Web() {
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+	//snippets *mysql.SnippetModel
+}
+
+func main() {
 	Print_thread_id()
 	addr := flag.String("addr", ":4001", "Сетевой адрес веб-сервера")
 	flag.Parse()
@@ -30,7 +36,6 @@ func Web() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
-	mux.HandleFunc("/pipe_data", pipe_data)
 	// Применяем созданные логгеры к нашему приложению.
 	infoLog.Printf("Запуск сервера на %s", *addr)
 	err := http.ListenAndServe(*addr, mux)

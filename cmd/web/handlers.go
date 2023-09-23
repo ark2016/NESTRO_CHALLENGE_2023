@@ -18,9 +18,16 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// Инициализируем срез содержащий пути к двум файлам. Обратите внимание, что
 	// файл home.page.tmpl должен быть *первым* файлом в срезе.
 	files := []string{
-		"./server/ui/html/home.html",
+		"./ui/html/home.html",
 	}
+	/*
+		files := []string{
+			"./ui/html/home.page.tmpl",
+			"./ui/html/base.layout.tmpl",
+			"./ui/html/footer.partial.tmpl",
+		}
 
+	*/
 	// Используем функцию template.ParseFiles() для чтения файлов шаблона.
 	// Если возникла ошибка, мы запишем детальное сообщение ошибки и
 	// используя функцию http.Error() мы отправим пользователю
@@ -35,29 +42,6 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// Затем мы используем метод Execute() для записи содержимого
 	// шаблона в тело HTTP ответа. Последний параметр в Execute() предоставляет
 	// возможность отправки динамических данных в шаблон.
-	err = ts.Execute(w, nil)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
-	}
-}
-
-func pipe_data(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-	files := []string{
-		"./ui/html/pipe_data.csv",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
-		return
-	}
-
 	err = ts.Execute(w, nil)
 	if err != nil {
 		log.Println(err.Error())
