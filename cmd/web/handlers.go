@@ -1,4 +1,4 @@
-package web
+package main
 
 import (
 	"html/template"
@@ -42,7 +42,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func pipe_data(w http.ResponseWriter, r *http.Request){
+func pipe_data(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return

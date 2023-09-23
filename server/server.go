@@ -1,7 +1,6 @@
-package main
+package aaaa
 
 import (
-	"./web"
 	"fmt"
 	"net"
 	"os"
@@ -39,7 +38,7 @@ func main() {
 */
 
 func main() {
-	go web.Web()                                       // запуск веб-сервера на порте 4000
+	//go web.Web()                                       // запуск веб-сервера на порте 4000
 	listener, _ := net.Listen("tcp", "127.0.0.1:8080") // открываем слушающий сокет
 	for {
 		conn, err := listener.Accept() // принимаем TCP-соединение от клиента и создаем новый сокет
@@ -63,10 +62,10 @@ func handleClient(conn net.Conn) {
 		message = strings.TrimSpace(message)
 		fmt.Println(message)
 		if message == "start" && web_id == -1 {
-			go web.Web()
+			//go web.Web()
 			fmt.Println("Сервер начал работу")
 			conn.Write(append([]byte("Сервер начал работу"))) // пишем в сокет
-			web_id = web.Print_thread_id()
+			//web_id = web.Print_thread_id()
 		} else if message == "stop" {
 			process := os.Process{Pid: web_id}
 			process.Kill()
