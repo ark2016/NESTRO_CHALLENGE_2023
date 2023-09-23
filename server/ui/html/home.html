@@ -1,12 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+
     <meta charset="UTF-8">
     <title>Домашняя страница</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<style>
+		body {
+			margin: 0;
+			background-color: white;
+		}
+
+		.navbar {
+			background-color: #333;
+			position: fixed;
+			top: 0;
+			width: 100%;
+			display:block;
+			transition: top 0.3s;
+		}
+
+		.navbar a {
+			float: left;
+			display: block;
+			color: #f2f2f2;
+			text-align: center;
+			padding: 15px;
+			text-decoration: none;
+			font-size: 25px;
+			margin: 20px
+		}
+
+		.navbar a:hover {
+			background-color: goldenrod;
+			color: black;
+		}
+
+		h1 {
+			color: darkslategray;
+			font-family: verdana; /* шрифт текста */
+			font-size: 250%;
+
+		}
+
+		p  {
+			color: darkslategray;
+			font-family: courier;
+			font-size: 160%;
+			/* border: 10px solid powderblue; /* граница элемента */
+			padding: 30px; /* определяет отступ (пробел) между текстом и границей */
+			margin: 50px; /* определяет поле (пробел) за пределами границы */
+			text-align: left; /* определяет выравнивание */
+		}
+
+		a {
+			color: darkslategray;
+			font-family: courier;
+			font-size: 200%;
+			padding: 4px; /* определяет отступ (пробел) между текстом и границей */
+			margin: 5px; /* определяет поле (пробел) за пределами границы */
+			text-align: center; /* определяет выравнивание */
+		}
+
+
+		.underline-one {
+			color: #00bfff; /* Цвет обычной ссылки */
+			position: relative;
+			cursor: pointer;
+			text-decoration: none; /* Убираем подчеркивание */
+		}
+		.underline-one:after {
+			content: "";
+			display: block;
+			position: absolute;
+			right: 0;
+			bottom: -3px;
+			width: 0;
+			height: 2px; /* Высота линии */
+			background-color: black; /* Цвет подчеркивания при исчезании линии*/
+			transition: width 0.5s; /* Время эффекта */
+		}
+
+		.underline-one:hover:after {
+			content: "";
+			width: 100%;
+			display: block;
+			position: absolute;
+			left: 0;
+			bottom: -3px;
+			height: 2px; /* Высота линии */
+			background-color: red; /* Цвет подчеркивания при появлении линии*/
+			transition: width 0.5s;  /* Время эффекта */
+		}
+
+		/* Style the tab */
+		.tab {
+			float: left;
+			border: 1px solid #ccc;
+			background-color: #f1f1f1;
+			width: 30%;
+			height: 300px;
+		}
+
+		/* Style the buttons that are used to open the tab content */
+		.tab button {
+			display: block;
+			background-color: inherit;
+			color: black;
+			padding: 22px 16px;
+			width: 100%;
+			border: none;
+			outline: none;
+			text-align: left;
+			cursor: pointer;
+			transition: 0.3s;
+		}
+
+		/* Change background color of buttons on hover */
+		.tab button:hover {
+			background-color: #ddd;
+		}
+
+		/* Create an active/current "tab button" class */
+		.tab button.active {
+			background-color: #ccc;
+		}
+
+		/* Style the tab content */
+		.tabcontent {
+			float: left;
+			padding: 0px 12px;
+			border: 1px solid #ccc;
+			width: 70%;
+			border-left: none;
+			height: 300px;
+		}
+
+
+
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 15%;
+			background-color: #f1f1f1;
+			position: fixed;
+			height: 100%;
+			overflow: auto;
+		}
+
+		li a {
+			display: block;
+			color: #000;
+			padding: 8px 16px;
+			text-decoration: none;
+		}
+
+		li a.active {
+			background-color: #04AA6D;
+			color: white;
+		}
+
+		li a:hover:not(.active) {
+			background-color: #555;
+			color: white;
+		}
+
+		table{
+			border: 1px solid black
+		}
+	</style>
+
 </head>
 <body>
-<center>
-  тут ничего нет, уйди на другой сайт
-</center>
+	<div class="navbar">
+		<a href="/home" class="underline-one">Главная</a>
+		<a href="/home" class="underline-one">Неглавная</a>
+	</div>
+	<h1>Это наш прекрасный сайт с интерактивными графиками</h1>
+	<p>Здесь очень крутое описание нашего решения, сгенерированное с помощью GigaChat</p>
+	<!--<div id = "container"></div>--> 
+	
+	<div id = "container"></div>
+	
+	<table style="width:100%">
+		<tr style="height: 500px">
+			<td>
+				<table id = "pipe_container">
+
+				</table>
+			</td>
+			<td id= "data_container">
+				Красивая таблица
+			</td>
+		</tr>
+	</table>
+	
+	<p>Здесь небольшое описание графика. Хз какое оно будет</p>
+	<script type="module">
+		import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+			// Declare the chart dimensions and margins.
+		/*const width = 640; 	// ширина графика
+		const height = 400; // длинна графика
+		const marginTop = 20;
+		const marginRight = 20;
+		const marginBottom = 30;
+		const marginLeft = 40;
+
+		// Объявление горизонтальной шкалы(в данном случае date)
+		const x = d3.scaleLog()
+			.domain([1, 1000])
+			.range([marginLeft, width - marginRight]); // размеры
+
+		// Объявление вертикальной шкалы
+		const y = d3.scaleLinear()
+			.domain([0, 100])
+			.range([height - marginBottom, marginTop]); // размеры
+
+		// Создается svg контейнер
+		const svg = d3.create("svg")
+			.attr("width", width)
+			.attr("height", height);
+
+		// Добавляется ось x
+		svg.append("g")
+			.attr("transform", `translate(0,${height - marginBottom})`)
+			.call(d3.axisBottom(x));
+		// Добавляется ось y
+		svg.append("g")
+			.attr("transform", `translate(${marginLeft},0)`)
+			.call(d3.axisLeft(y));
+
+		// Append the SVG element.
+		data_container.append(svg.node());*/
+		
+		d3.csv("pipe_data.csv", function(data){
+				var s = document.createElement("tr");
+				var text = document.createTextNode(data.Name);
+				s.appendChild(text);
+				pipe_container.appendChild(s);
+			} )
+	</script>
 </body>
 </html>
