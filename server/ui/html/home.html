@@ -1,12 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+
     <meta charset="UTF-8">
     <title>Домашняя страница</title>
+	
+    <link rel="stylesheet" href="/server/ui/static/css/styles.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 </head>
 <body>
-<center>
-  тут ничего нет, уйди на другой сайт
-</center>
+	<div class="navbar">
+		<a href="/home" class="underline-one">Главная</a>
+		<a href="/home" class="underline-one">Неглавная</a>
+	</div>
+	<h1>Это наш прекрасный сайт с интерактивными графиками</h1>
+	<p>Здесь очень крутое описание нашего решения, сгенерированное с помощью GigaChat</p>
+	<!--<div id = "container"></div>--> 
+	
+	<div id = "container"></div>
+	
+	<table style="width:100%">
+		<tr style="height=500px">
+			<td>
+				<table id = "pipe_container">
+
+				</table>
+			</td>
+			<td id= "data_container">
+				Красивая таблица
+			</td>
+		</tr>
+	</table>
+	
+	<p>Здесь небольшое описание графика. Хз какое оно будет</p>
+	<script type="module">
+		import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+			// Declare the chart dimensions and margins.
+		/*const width = 640; 	// ширина графика
+		const height = 400; // длинна графика
+		const marginTop = 20;
+		const marginRight = 20;
+		const marginBottom = 30;
+		const marginLeft = 40;
+
+		// Объявление горизонтальной шкалы(в данном случае date)
+		const x = d3.scaleLog()
+			.domain([1, 1000])
+			.range([marginLeft, width - marginRight]); // размеры
+
+		// Объявление вертикальной шкалы
+		const y = d3.scaleLinear()
+			.domain([0, 100])
+			.range([height - marginBottom, marginTop]); // размеры
+
+		// Создается svg контейнер
+		const svg = d3.create("svg")
+			.attr("width", width)
+			.attr("height", height);
+
+		// Добавляется ось x
+		svg.append("g")
+			.attr("transform", `translate(0,${height - marginBottom})`)
+			.call(d3.axisBottom(x));
+		// Добавляется ось y
+		svg.append("g")
+			.attr("transform", `translate(${marginLeft},0)`)
+			.call(d3.axisLeft(y));
+
+		// Append the SVG element.
+		data_container.append(svg.node());*/
+		
+		d3.csv("pipe_data.csv", function(data){
+				var s = document.createElement("tr");
+				var text = document.createTextNode(data.Name);
+				s.appendChild(text);
+				pipe_container.appendChild(s);
+			} )
+	</script>
 </body>
 </html>

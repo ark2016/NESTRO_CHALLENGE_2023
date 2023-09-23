@@ -30,7 +30,7 @@ func Web() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
-
+	mux.HandleFunc("/pipe_data", pipe_data)
 	// Применяем созданные логгеры к нашему приложению.
 	infoLog.Printf("Запуск сервера на %s", *addr)
 	err := http.ListenAndServe(*addr, mux)
