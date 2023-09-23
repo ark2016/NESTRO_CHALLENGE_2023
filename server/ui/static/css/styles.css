@@ -1,0 +1,163 @@
+body {
+    margin: 0;
+    background-color: white;
+}
+
+.navbar {
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display:block;
+    transition: top 0.3s;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 25px;
+    margin: 20px
+}
+
+.navbar a:hover {
+    background-color: goldenrod;
+    color: black;
+}
+
+h1 {
+    color: darkslategray;
+    font-family: verdana; /* шрифт текста */
+    font-size: 250%;
+
+}
+
+p  {
+    color: darkslategray;
+    font-family: courier;
+    font-size: 160%;
+    /* border: 10px solid powderblue; /* граница элемента */
+    padding: 30px; /* определяет отступ (пробел) между текстом и границей */
+    margin: 50px; /* определяет поле (пробел) за пределами границы */
+    text-align: left; /* определяет выравнивание */
+}
+
+a {
+    color: darkslategray;
+    font-family: courier;
+    font-size: 200%;
+    padding: 4px; /* определяет отступ (пробел) между текстом и границей */
+    margin: 5px; /* определяет поле (пробел) за пределами границы */
+    text-align: center; /* определяет выравнивание */
+}
+
+
+.underline-one {
+    color: #00bfff; /* Цвет обычной ссылки */
+    position: relative;
+    cursor: pointer;
+    text-decoration: none; /* Убираем подчеркивание */
+}
+.underline-one:after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    width: 0;
+    height: 2px; /* Высота линии */
+    background-color: black; /* Цвет подчеркивания при исчезании линии*/
+    transition: width 0.5s; /* Время эффекта */
+}
+
+.underline-one:hover:after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px; /* Высота линии */
+    background-color: red; /* Цвет подчеркивания при появлении линии*/
+    transition: width 0.5s;  /* Время эффекта */
+}
+
+/* Style the tab */
+.tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 30%;
+    height: 300px;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 300px;
+}
+
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 15%;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+
+table{
+	border: 1px solid black
+}
