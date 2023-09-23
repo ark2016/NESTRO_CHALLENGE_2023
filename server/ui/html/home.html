@@ -3,17 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Домашняя страница</title>
+	
+	<style>
+		table{
+			border: 1px solid black
+		}
+	</style>
 </head>
 <body>
 	<h1>Это наш прекрасный сайт с интерактивными графиками</h1>
 	<p>Здесь очень крутое описание нашего решения, сгенерированное с помощью GigaChat</p>
+	<!--<div id = "container"></div>--> 
+	
 	<div id = "container"></div>
+	
+	<table style="width:100%">
+		<tr style="height=500px">
+			<td>
+				<table id = "pipe_container">
+
+				</table>
+			</td>
+			<td id= "data_container">
+				Красивая таблица
+			</td>
+		</tr>
+	</table>
 	
 	<p>Здесь небольшое описание графика. Хз какое оно будет</p>
 	<script type="module">
 		import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 			// Declare the chart dimensions and margins.
-		const width = 640; 	// ширина графика
+		/*const width = 640; 	// ширина графика
 		const height = 400; // длинна графика
 		const marginTop = 20;
 		const marginRight = 20;
@@ -45,7 +66,14 @@
 			.call(d3.axisLeft(y));
 
 		// Append the SVG element.
-		container.append(svg.node());
+		data_container.append(svg.node());*/
+		
+		d3.csv("pipe_data.csv", function(data){
+				var s = document.createElement("tr");
+				var text = document.createTextNode(data.Name);
+				s.appendChild(text);
+				pipe_container.appendChild(s);
+			} )
 	</script>
 <center>
   тут ничего нет, уйди на другой сайт
