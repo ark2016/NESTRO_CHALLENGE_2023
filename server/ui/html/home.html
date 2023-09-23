@@ -7,6 +7,12 @@
 	
     <link rel="stylesheet" href="/server/ui/static/css/styles.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<style>
+	td, th, table{
+		border: 1px solid black
+	}
+	</style>
 
 </head>
 <body>
@@ -36,30 +42,57 @@
 				<th> 
 					<td>
 						Режим работы трубы
+						<div id='param-flow_regime'>-</div>
 					</td>
 				</th>
 				<tr>
 					
 					<td>
 						Загрузка
+						<div id='param-charge'>-</div>
 					</td>
 					<td>
 						Qн
+						<div id='param-Qn'>-</div>
 					</td>
 					<td>
 						Qг
+						<div id='param-Qg'>-</div>
 					</td>
 					<td>
 						Qв
+						<div id='param-Qv'>-</div>
 					</td>
 					<td>
 						Р
+						<div id='param-R'>-</div>
 					</td>
 					<td>
 						т
+						<div id='param-T'>-</div>
 					</td>
 				</tr>
-				<>
+				<tr>
+					<td>
+						Фактическая скорость потока
+						<div id='param-factic_velocity'>-</div>
+					</td>
+					<td>
+						Критическая скорость перехода в расслоенный поток
+						<div id='param-critic_velocity'>-</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Процент накопленного износа
+						<div id='param-crash'>-</div>
+					</td>
+					<td>
+						Остаточный ресурс, годы
+						<div id='param-lifetime'>-</div>
+					</td>
+				</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
