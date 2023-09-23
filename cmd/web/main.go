@@ -19,7 +19,7 @@ type application struct {
 
 func main() {
 	Print_thread_id()
-	addr := flag.String("addr", ":4001", "Сетевой адрес веб-сервера")
+	addr := flag.String("addr", ":4000", "Сетевой адрес веб-сервера")
 	flag.Parse()
 
 	// Используйте log.New() для создания логгера для записи информационных сообщений. Для этого нужно
@@ -36,6 +36,16 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
+	// Инициализируем FileServer, он будет обрабатывать
+	// HTTP-запросы к статическим файлам из папки "./ui/static".
+	// Обратите внимание, что переданный в функцию http.Dir путь
+	// является относительным корневой папке проекта
+	fileServer := http.FileServer(http.Dir("./ui/static/"))
+
+	// Используем функцию mux.Handle() для регистрации обработчика для
+	// всех запросов, которые начинаются с "/static/". Мы убираем
+	// префикс "/static" перед тем как запрос достигнет http.FileServer
+	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 	// Применяем созданные логгеры к нашему приложению.
 	infoLog.Printf("Запуск сервера на %s", *addr)
 	err := http.ListenAndServe(*addr, mux)
