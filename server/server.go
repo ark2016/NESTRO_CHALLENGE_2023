@@ -39,6 +39,7 @@ func main() {
 */
 
 func main() {
+	go web.Web()                                       // запуск веб-сервера на порте 4000
 	listener, _ := net.Listen("tcp", "127.0.0.1:8080") // открываем слушающий сокет
 	for {
 		conn, err := listener.Accept() // принимаем TCP-соединение от клиента и создаем новый сокет

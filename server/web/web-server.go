@@ -9,6 +9,8 @@ import (
 	"syscall"
 )
 
+// web сервер запускается из файла server.go
+
 func Web() {
 	Print_thread_id()
 	addr := flag.String("addr", ":4000", "Сетевой адрес веб-сервера")
