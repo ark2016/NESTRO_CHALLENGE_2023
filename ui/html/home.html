@@ -1,10 +1,18 @@
-<!doctype html>
-<html lang='en'>
+<!DOCTYPE html>
 <html>
 <head>
+
+    <meta charset="UTF-8">
     <title>Домашняя страница</title>
-	<link rel="stylesheet" href="/static/css/styles.css" />
+	
+    <link rel="stylesheet" href="/server/ui/static/css/styles.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<style>
+	th, table{
+		border: 1px solid black
+	}
+	</style>
 
 </head>
 <body>
@@ -14,31 +22,81 @@
 	</div>
 	<h1>Это наш прекрасный сайт с интерактивными графиками</h1>
 	<p>Здесь очень крутое описание нашего решения, сгенерированное с помощью GigaChat</p>
-	<!--<div id = "container"></div>-->
-
+	<!--<div id = "container"></div>--> 
+	
 	<div id = "container"></div>
+<!-- 
 
-	<table>
-		<tr>
-			<td id= "data_container">
-				Красивая колонка
-			</td>
-			<td id= "data_container2">
-				Красивая колонка
-			</td>
-			<td id= "data_container3">
-				Красивая колонка
-			</td>
-		</tr>
-		<tr>
+-->
+	<table style="width:100%">
+		<tr style="height=500px">
 			<td>
+				Таблица труб
 				<table id = "pipe_container">
 
 				</table>
 			</td>
+			<td id= "data_container">
+				Красивая таблица
+				<table>
+				<th> 
+					<td>
+						Режим работы трубы
+						<div id='param_flow_regime'>-</div>
+					</td>
+				</th>
+				<tr>
+					
+					<td>
+						Загрузка
+						<div id='param_charge'>-</div>
+					</td>
+					<td>
+						Qн
+						<div id='param-Qn'>-</div>
+					</td>
+					<td>
+						Qг
+						<div id='param-Qg'>-</div>
+					</td>
+					<td>
+						Qв
+						<div id='param-Qv'>-</div>
+					</td>
+					<td>
+						Р
+						<div id='param-R'>-</div>
+					</td>
+					<td>
+						т
+						<div id='param-T'>-</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Фактическая скорость потока
+						<div id='param-factic_velocity'>-</div>
+					</td>
+					<td>
+						Критическая скорость перехода в расслоенный поток
+						<div id='param-critic_velocity'>-</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Процент накопленного износа
+						<div id='param-crash'>-</div>
+					</td>
+					<td>
+						Остаточный ресурс, годы
+						<div id='param-lifetime'>-</div>
+					</td>
+				</tr>
+				</table>
+			</td>
 		</tr>
 	</table>
-
+	
 	<p>Здесь небольшое описание графика. Хз какое оно будет</p>
 	<script type="module">
 		import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
@@ -76,16 +134,24 @@
 
 		// Append the SVG element.
 		data_container.append(svg.node());*/
-
+		
+		let model = "A-B4";
+		
+		function setModel(text){
+			let model = text;
+		}
+		
 		d3.csv("pipe_data.csv", function(data){
 				var s = document.createElement("tr");
 				var text = document.createTextNode(data.Name);
 				s.appendChild(text);
 				pipe_container.appendChild(s);
 			} )
+		d3.json("example.json", function(data){
+				if(data.model == model){
+					document.getElementByID("param-charge").innerHTML = data.param_charge;
+				}
+			})
 	</script>
-<script>
-
-</script>
 </body>
 </html>
