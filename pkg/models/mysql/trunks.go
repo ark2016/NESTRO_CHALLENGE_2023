@@ -82,7 +82,7 @@ ResidualResource, created)
 }
 
 // Get - Метод для возвращения данных заметки по её идентификатору ID.
-func (m *TrunkModel) Get(id int) (*models.Trunk, error) {
+func (m *TrunkModel) Get(Model string) (*models.Trunk, error) {
 	// SQL запрос для получения данных одной записи.
 	stmt := `SELECT id, Model, ParamCharge, ParamQn,
 		ParamQg,
@@ -95,12 +95,12 @@ func (m *TrunkModel) Get(id int) (*models.Trunk, error) {
 		ParamCrash,
 		ParamLifetime,
 		ResidualResource, created FROM trunks
-    WHERE id = ?`
+    WHERE Model = ?`
 
 	// Используем метод QueryRow() для выполнения SQL запроса,
 	// передавая ненадежную переменную id в качестве значения для плейсхолдера
 	// Возвращается указатель на объект sql.Row, который содержит данные записи.
-	row := m.DB.QueryRow(stmt, id)
+	row := m.DB.QueryRow(stmt, Model)
 
 	// Инициализируем указатель на новую структуру Snippet.
 	s := &models.Trunk{}
