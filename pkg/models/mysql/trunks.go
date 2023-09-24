@@ -3,19 +3,46 @@ package mysql
 import (
 	"database/sql"
 	"errors"
+	"time"
 	// Импортируем только что созданный пакет models. Нам нужно добавить к нему префикс
 	// независимо от того, какой путь к модулю вы установили
 	// чтобы оператор импорта выглядел как
 	// "{ваш-путь-модуля}/pkg/models"..
 )
 
+var ErrNoRecord = errors.New("models: подходящей записи не найдено")
+
+type Trunk struct {
+	ID                  int
+	Model               string
+	ParamCharge         int
+	ParamQn             float64
+	ParamQg             float64
+	ParamQv             float64
+	P                   float64
+	T                   float64
+	ParamFlowRegime     string
+	ParamFacticVelocity int
+	ParamCriticVelocity int
+	ParamCrash          int
+	ParamLifetime       int
+	ResidualResource    int
+	Created             time.Time
+}
+
+/*
+Обратите внимание, как названия полей структуры Snippet соответствуют полям в MySQL таблице snippets?
+*/
+
+
+
 // SnippetModel - Определяем тип который обертывает пул подключения sql.DB
-type SnippetModel struct {
+type TrunkModel struct {
 	DB *sql.DB
 }
 
 // Insert - Метод для создания новой заметки в базе дынных.
-func (m *SnippetModel) Insert(title, content, expires string) (int, error) {
+func (m *TrunkModel) Insert(title, content, expires string) (int, error) {
 	// Ниже будет SQL запрос, который мы хотим выполнить. Мы разделили его на две строки
 	// для удобства чтения (поэтому он окружен обратными кавычками
 	// вместо обычных двойных кавычек).
@@ -45,7 +72,7 @@ func (m *SnippetModel) Insert(title, content, expires string) (int, error) {
 }
 
 // Get - Метод для возвращения данных заметки по её идентификатору ID.
-func (m *SnippetModel) Get(id int) (*Snippet, error) {
+func (m *TrunkModel) Get(id int) (*Trunk, error) {
 	// SQL запрос для получения данных одной записи.
 	stmt := `SELECT id, title, content, created, expires FROM snippets
     WHERE expires > UTC_TIMESTAMP() AND id = ?`
@@ -56,14 +83,14 @@ func (m *SnippetModel) Get(id int) (*Snippet, error) {
 	row := m.DB.QueryRow(stmt, id)
 
 	// Инициализируем указатель на новую структуру Snippet.
-	s := &trunk{}
+	s := &Trunk{}
 
 	// Используйте row.Scan(), чтобы скопировать значения из каждого поля от sql.Row в
 	// соответствующее поле в структуре Snippet. Обратите внимание, что аргументы
 	// для row.Scan - это указатели на место, куда требуется скопировать данные
 	// и количество аргументов должно быть точно таким же, как количество
 	// столбцов в таблице базы данных.
-	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+	err := row.Scan(&s.ID, &s.ParamFlowRegime, &s.ParamQg, &s.Created, &s.ParamQv)
 	if err != nil {
 		// Специально для этого случая, мы проверим при помощи функции errors.Is()
 		// если запрос был выполнен с ошибкой. Если ошибка обнаружена, то
@@ -91,7 +118,7 @@ TIME, DATE и TIMESTAMP соответствуют time.Time.
 */
 
 // Latest - Метод возвращает последние 10 заметок.
-func (m *SnippetModel) Latest() ([]*Snippet, error) {
+func (m *TrunkModel) Latest() ([]*Trunk, error) {
 	// Пишем SQL запрос, который мы хотим выполнить.
 	stmt := `SELECT id, title, content, created, expires FROM snippets
     WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT 10`
@@ -111,20 +138,20 @@ func (m *SnippetModel) Latest() ([]*Snippet, error) {
 	defer rows.Close()
 
 	// Инициализируем пустой срез для хранения объектов models.Snippets.
-	var snippets []*Snippet
+	var snippets []*Trunk
 
 	// Используем rows.Next() для перебора результата. Этот метод предоставляем
 	// первый а затем каждую следующею запись из базы данных для обработки
 	// методом rows.Scan().
 	for rows.Next() {
 		// Создаем указатель на новую структуру Snippet
-		s := &Snippet{}
+		s := &Trunk{}
 		// Используем rows.Scan(), чтобы скопировать значения полей в структуру.
 		// Опять же, аргументы предоставленные в row.Scan()
 		// должны быть указателями на место, куда требуется скопировать данные и
 		// количество аргументов должно быть точно таким же, как количество
 		// столбцов из таблицы базы данных, возвращаемых вашим SQL запросом.
-		err = rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
+		err = rows.Scan(&s.ID)
 		if err != nil {
 			return nil, err
 		}

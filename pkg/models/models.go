@@ -7,7 +7,7 @@ import (
 
 var ErrNoRecord = errors.New("models: подходящей записи не найдено")
 
-type trunk struct {
+type Trunk struct {
 	ID                  int
 	Model               string
 	ParamCharge         int
