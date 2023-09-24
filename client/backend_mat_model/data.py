@@ -2,12 +2,12 @@ import pandas as pd
 import numpy as np
 
 # const
-#(4.1-4.4)
+# (4.1-4.4)
 n = 1.2
 m1 = 0.8
 m3 = 1
 
-#(6.1)
+# (6.1)
 k = 1
 
 
@@ -74,6 +74,7 @@ def permissible_pressure_func(t: float, R_H_2: float, R_H_1: float, m2: float, a
         permissible_pressure = (1.8 * R_H_2 * m3) / (n * (alfa * D_n - 2 * t))
     return permissible_pressure
 
+
 # Расчёты напряжённо-деформированного состояния трубопроводов
 # ОСТ 153-39.4-010-2002 | 16 страница (6,1) Проверочный расчет толщины стенки трубопровода, а также её
 # определение в случае ремонта
@@ -102,8 +103,9 @@ def check_calculation_of_pipeline_wall_thickness(gamma_f: float, P: float, D_h: 
     calculation_of_pipeline_thickness = (gamma_f * k * P * D_h) / (2 * (R + 0.6 * gamma_f * P))
     return calculation_of_pipeline_thickness
 
-#(6.2)
-#Проверка общей устойчивости подземного трубопровода в продольном направлении
+
+# (6.2)
+# Проверка общей устойчивости подземного трубопровода в продольном направлении
 def checking_stability_of_underground_pipeline_in_longitudinal_direction(S: float, m2: float, N_cp: float) -> bool:
     """
     :param S: эквивалентное продольное осевое усилие в трубопроводе, возникаю шее от действия расчетных нагрузок и
@@ -115,8 +117,9 @@ def checking_stability_of_underground_pipeline_in_longitudinal_direction(S: floa
     """
     return S <= m2 * N_cp
 
-#Расчёт остаточного ресурса трубопровода по минимальной вероят ной толщине стенки труб по результатам диагностики
-#ОСТ 153-39.4-010-2002 | 19 страница (7.1)
+
+# Расчёт остаточного ресурса трубопровода по минимальной вероятной толщине стенки труб по результатам диагностики
+# ОСТ 153-39.4-010-2002 | 19 страница (7.1)
 def standard_deviation_sigma(N: int, t_k: list, t_cp: float) -> float:
     """
     :param N: число участков замера
@@ -126,15 +129,18 @@ def standard_deviation_sigma(N: int, t_k: list, t_cp: float) -> float:
     """
     sum_of_squares = 0
     for k in range(N):
-        sum_of_squares += (t_k[k] - t_cp)**2
-    sigma = (sum_of_squares / (N - 1))**.5
+        sum_of_squares += (t_k[k] - t_cp) ** 2
+    sigma = (sum_of_squares / (N - 1)) ** .5
     return sigma
 
-#(7.2)
-#Минимальную возможную толщину стенки с учетом пеконтролиро ванных участко в поверхности определяют для доверительной
+
+# (7.2)
+# Минимальную возможную толщину стенки с учетом пеконтролиро ванных участко в поверхности определяют для доверительной
 # вероятности 95% применительно но всем промысловым трубопроводам по формуле
-def minimum_possible_wall_thickness(t_cp: float, sigma: float, t_k: list, increased_accuracy:bool = False) -> float:
+def minimum_possible_wall_thickness(t_cp: float, sigma: float, t_k: list, increased_accuracy: bool = False) -> float:
     """
+    :param t_k: результаты измерений толщин нак-х участках поверхности
+    :param increased_accuracy: flag
     :param t_cp: средняя измеренная толщина
     :param sigma: Среднее квадратическое отклонение
     :return: Минимальную возможную толщину стенки
@@ -144,8 +150,10 @@ def minimum_possible_wall_thickness(t_cp: float, sigma: float, t_k: list, increa
         for i in t_k:
             t_min = min(t_min, i)
     return t_min
-#(7.3)
-#Средняя скорость коррозии стенки трубопровода
+
+
+# (7.3)
+# Средняя скорость коррозии стенки трубопровода
 def average_corrosion_rate_of_pipeline_wall(t_n: float, t_min: float, tau: float) -> float:
     """
     :param t_n: номинальная толщина стенки
@@ -156,9 +164,10 @@ def average_corrosion_rate_of_pipeline_wall(t_n: float, t_min: float, tau: float
     V_cp = (t_n - t_min) / tau
     return V_cp
 
-#(7,4)
-#Остаточный ресурс трубопровода
-def residual_life_of_pipeline(t_min: float, t_otb: float, V_cp: float ) -> float:
+
+# (7,4)
+# Остаточный ресурс трубопровода
+def residual_life_of_pipeline(t_min: float, t_otb: float, V_cp: float) -> float:
     """
     :param t_min: Минимальную возможную толщину стенки
     :param t_otb: толщина стенки трубы или детали трубопровода, м, при которой они должны быть изъяты из эксплуатации
@@ -167,3 +176,274 @@ def residual_life_of_pipeline(t_min: float, t_otb: float, V_cp: float ) -> float
     """
     tau_ost = (t_min - t_otb) / V_cp
     return tau_ost
+
+
+# ОСТ 153-39.4-010-2002 | 20 страница (8.1)
+# Вероятностный расчёт остаточного ресурса с учётом общего коррозионно-зрозненного износа стенки трубы
+def internal_pressure_pipeline_element_can_withstand(t_n, delta_0, delta, R_H_1, m2, k1, alfa, D_n) -> float:
+    """
+    t: Текущую толщину стенки
+    :param k1: -//-
+    :param m2: -//-
+    :param R_H_1: -//-
+    :param t_n: номинальная толщина стенки
+    :param delta_0: начальное технологическое изменение толщины стенки
+    :param delta: износ стени
+    :param alfa:-//-
+    :param D_n:-//-
+    :return:
+    """
+    t = t_n - delta_0 - delta
+    R1 = R_H_1 * m1 * m2 * k1
+    P_0 = (2 * t * R1) / (n * alfa * D_n)
+    return P_0
+
+
+# (8.2)
+# P_0_n = internal_pressure_pipeline_element_can_withstand(...)
+def have_pipeline_strength_during_operation(P_0_n, delta_0, delta, t_n, P) -> bool:
+    """
+    :param P_0_n: внутреннее давление которое может выдержать элемент трубопровода
+    :param delta_0: -//-
+    :param delta: -//-
+    :param t_n: -//-
+    :param P: рабочее давление
+    :return:
+    """
+    delta_0_ = delta_0 / t_n
+    delta_ = delta / t_n
+    return P_0_n * (1 - delta_0_ - delta_) >= P
+
+
+# (8.3) (8.4)
+# условне прочности трубопровода в терминах относительного износа можно представить в виде
+def conditional_strength_of_pipeline(t_R, t_n, delta_0, delta) -> bool:
+    """
+    :param t_R: расчетная толщина стенки
+    :param t_n:-//-
+    :param delta_0:-//-
+    :param delta: текущий относительный износ стенки
+    :return:
+    permissible_relative_wear_of_wall: допустимый относительный износ стенки
+    """
+    permissible_relative_wear_of_wall = 1 - t_R / t_n - delta_0
+    return permissible_relative_wear_of_wall >= delta
+
+
+# 8.5
+# Процесс износа стенки
+def wall_wear_process(a, tau, m) -> float:
+    """
+    :param a: случайный параметр
+    :param tau: время эксплуатации трубопровода, лет
+    :param m: детерминированный параметры
+    :return:Процесс износа стенки
+    """
+    delta = a * tau ** m
+    return delta
+
+
+# 8.6
+# среднего относительного износа трубопровода
+def average_relative_wear_of_pipeline(t_k: list, t_nk: list, N_i: int) -> float:
+    """
+    :param t_k: текущая толщина стенки в месте к-го замера
+    :param t_nk: ноинальная толщина стенки диагностируемого элемента
+    :param N_i: Число замеров толщины стенки при каждом диагностирование
+    :return:
+    """
+    sigma = 0
+    for k in range(N_i):
+        sigma += 1 - t_k[k] - t_nk[k]
+    delta_icp = 1 / N_i * sigma
+    return delta_icp
+
+
+# 8.7
+# Статистическая оценка среднего квадратического отклонения параметра а
+def statistical_estimate_of_standard_deviation_of_a(delta_cp, tau_d, t_n, t_k: list, S_0, tau_i: list, m, N) -> float:
+    """
+    :param N: Число замеров толщины стенки при каждом диагностирование
+    :param tau_d: паработка на момент носледнего диагностирования
+    :param m: детерменированный параметр
+    :param delta_cp: средний относительный износ стенки в момент времени
+    :param t_n: ноинальная толщина стенки
+    :param t_k: текущая толщина стенки в месте к-го замера
+    :param S_0: начальное среднеквадратическое отклонение толщины стенки
+    :param tau_i: время диагностирования, когда проводился данный К-й замер тол пы стенки
+    :return:
+    """
+    a_cp = delta_cp / tau_d ** m
+    sigma = 0
+    for i in range(N):
+        delta_k = (t_n - t_k[k]) / t_n
+        sigma += (delta_k ** 2 - S_0 ** 2) / tau_i[k] ** (2 * m) - a_cp ** 2
+    S_a = (1 / (N - 1) * sigma) ** .5
+    return S_a
+
+
+# 8.8
+
+def statistical_estimate_of_standard_deviation_of_a_in_moment(S_delta, S_0, tau_d, m) -> float:
+    """
+    :param S_delta: среднее квадратическое отклонение относительной толщины стенки в момент времени
+    :param S_0: начальное среднеквадратическое отклонение толщины стенки
+    :param tau_d: время диагностирования
+    :param m: детерменированный параметр
+    :return:
+    """
+    S_a = ((S_delta ** 2 - S_0 ** 2) / tau_d ** m) ** .5
+    return S_a
+
+
+# 8.9
+# Дисперсия допустимого относительного износа
+# длч практики S_delta_in_square_brackets = S_0 = 0.05
+def variance_of_permissible_relative_wear(S_0, S_t) -> float:
+    """
+    :param S_0:
+    :param S_t:
+    Дисперсия начального технологического отклонения и значений t_R / t_n для сентов трубопровода
+    :return:
+    """
+    S_delta_in_square_brackets = (S_0 ** 2 + S_t ** 2) ** .5
+    return S_delta_in_square_brackets
+
+
+# ________________________________________________РД 39-0147323-339-89-Р_________________________________________________
+
+# const
+
+g = 9.81
+e = np.e
+pi = np.pi
+# коэффициент кинематической вязкости воды
+nu_v = 10 ** (-6)
+
+
+# 2.8.1 c. 6 (1-2)
+# условный диаметр трубопровода, обеспечивающий антикоррозионный режим течения жидкости
+def nominal_pipeline_diameter(mu_h, Q_cm, nu_c, ro_c, beta, sigma, ro_b, ro_e, ro_h, nu_h) -> float:
+    """
+    :param mu_h: динамическая вязкость безводной дегазированной нефти, мПа'С;
+    :param Q_cm:объемный секундный расход смеси, м^3/с;
+    :param nu_c: коэффициент кинематической вязкости среды и нефти, соответственно, м^2/с;
+    :param nu_h: коэффициент кинематической вязкости среды и нефти, соответственно, м^2/с;
+    :param ro_c: плотность среды
+    :param beta: расходное газоеодержание
+    :param sigma: поверхностное натяжение на границе нефть вода, Н/м;
+    :param ro_b: плотность воды
+    :param ro_e: плотность эмульсии
+    :param ro_h: плотность нефти
+    :return: условный диаметр трубопровода, обеспечивающий антикоррозионный режим течения жидкости
+    """
+    if mu_h <= 25:
+        D_kr = ((Q_cm * nu_c ** 0.0733 * ro_c ** 0.536 * (-10.96 * beta ** 2 + 9.94 * beta + 1) ** 0.659) /
+                (5.254 * sigma ** 0.171 * (g * (ro_b - ro_e)) ** 0.366)) ** 0.441
+    else:
+        D_kr = ((Q_cm * ro_h ** 0.615 * nu_h ** 0.231) /
+                (1.916 * sigma ** 0.41 * (g * (ro_b - ro_e)) ** 0.205 * e ** (2.22 * beta ** 7.63))) ** 0.494
+    return D_kr
+
+
+# максимальной длины ветви нефтесбора
+# D_kr = nominal_pipeline_diameter(...)
+
+# Значение максимальной длины ветви Lmax является
+# расстоянием от пункта сбора до наиболее удаленного куста,
+# продукция которого собирается на данный пункт. Расстановка
+# пунктов сбора с лимитированной длиной ветви обеспечивает
+# работу трубопроводов в антикоррозионном режиме на
+# 85— 100% участков системы нефтегазосбора, то есть позволяет наиболее эффективно использовать технологические методы защиты от коррозии.
+# РД 39-0147323-339-89-Р
+def calculation_of_max_len_of_oil_collection_branch(delta_P, D_kr, beta, Q_cm, ro_e, lambda_cm) -> float:
+    """
+    :param delta_P: перепад давления на ветви, Па;
+    :param D_kr: условный диаметр трубопровода
+    :param beta: расходное газоеодержание
+    :param Q_cm: объемный секундный расход смеси, м^3/с;
+    :param ro_e: плотность эмульсии
+    :param lambda_cm: коэффициент гидравлического сопротивления смеси, рассчитываемый в соответствии с ВСН 2.38 85.
+    :return: расчет максимальной длины ветви нефтесбора
+    """
+    L_max = (delta_P * D_kr * pi ** 2 * (1 - beta)) / (8 * Q_cm ** 2 * ro_e * lambda_cm)
+    return L_max
+
+
+# Критическая скорость выноса рыхлых осадков водной фазой расслоенного потока
+def critical_drift_speed(ro_h, ro_b, S, psi, D) -> float:
+    """
+    :param ro_h: плотность осадка кг/м^3
+    2650
+    :param ro_b: плотность воды кг/м^3
+    :param S: объемная концентрация твердой фазы, м^3/м^3
+    2*10**5
+    :param psi: коэффициент фиктивного лобового сопротивления (табл. 1) РД 39-0147323-339-89-Р
+    :param D: внутренний диаметр трубопровода, м
+    10**(-3)
+    :return: Критическая скорость выноса рыхлых осадков водной фазой расслоенного потока
+    """
+    U_kp = 710 * (nu_v * (ro_h - ro_b) / ro_b) ** (1 / 3) * (S * psi) ** (1 / 6) * D ** (1 / 3)
+    return U_kp
+
+
+# Если по отдельному участку нефтесбора отсутствуют данные анализа воды, допускается рассчитывать их по сред ним
+# химическим составам вод различных пластов и объемам их добычи или по химическому составу вод всех скважин и их
+# дебитам с использованием аддитивных зависимостей
+
+def get_water_analysis_data_available(n, marr: list, qarr: list) -> float:
+    """
+    :param n:
+    :param marr:значения определяемого фактора для каждого пласта;
+    :param qarr: Объем воды данного пласта, поступающей в трубо провод
+    :return:
+    """
+    MQ = 0
+    Q = 0
+    for i in range(n):
+        MQ += marr[i] * qarr[i]
+        Q += qarr[i]
+    M_cp = MQ / Q
+    return M_cp
+
+#Расчет максимальной скорости коррозии
+# параметры беруться из таблицы 2 РД 39-0147323-339-89-Р
+def calculation_of_max_corrosion_rate(K_Cl, K_HCO3, K_Ca, K_pH, K_p, K_v_cm, K_v_cm_v_kp) -> float:
+    K_x = K_Cl * K_HCO3 * K_Ca * K_pH
+    K_r = K_p * K_v_cm * K_v_cm_v_kp
+    ro_max = K_x * K_r
+    return ro_max
+
+# Существование антикоррозионного режима 16 c
+
+
+#Алгоритм расчета
+#среднее давление на участке. Па
+
+def average_pressure_in_area(P_n, P_k) -> float:
+    P_cp = (P_n - P_k) / 2
+    return P_cp
+
+
+#20 c
+
+
+#Расчет параметров при прогнозировании аварий и отбраковке трубопроводов
+#Для оценки возможности возникновения аварии в n-м году с начала эксплуатации рассчитывается величина
+def assessing_possibility_of_accident(n, K:list, ro_max, sigma_ct) -> float:
+    """
+    :param n: годы эксплуатации
+    :param K: коэффициент, учитывающий применение ингибиторов коррозии в 1-м году;
+    в случае ингибирования К. = 0,3; без ингибирования К = 1
+    :param ro_max: максимально возможная при данных физико-хими- ческих свойствах среды и гидродинамических параметрах
+    движения смеси скорость коррозии, характеризующая локальные коррозионные поражения в 1-м году,
+    мм/год (см. приложение 1)
+    :param sigma_ct: толщина стенки трубопровода, мм
+    :return:
+    """
+    sigma = 0
+    for i in range(n):
+        sigma += K[i] * ro_max
+    P_n = sigma_ct - sigma
+    return P_n
+

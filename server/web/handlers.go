@@ -1,4 +1,4 @@
-package main
+package web
 
 import (
 	"html/template"
@@ -18,7 +18,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// Инициализируем срез содержащий пути к двум файлам. Обратите внимание, что
 	// файл home.page.tmpl должен быть *первым* файлом в срезе.
 	files := []string{
-		"./ui/html/home.html",
+		"./server/ui/html/home.html",
 	}
 
 	// Используем функцию template.ParseFiles() для чтения файлов шаблона.
