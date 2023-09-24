@@ -42,14 +42,14 @@
 				<th> 
 					<td>
 						Режим работы трубы
-						<div id='param-flow_regime'>-</div>
+						<div id='param_flow_regime'>-</div>
 					</td>
 				</th>
 				<tr>
 					
 					<td>
 						Загрузка
-						<div id='param-charge'>-</div>
+						<div id='param_charge'>-</div>
 					</td>
 					<td>
 						Qн
@@ -135,12 +135,23 @@
 		// Append the SVG element.
 		data_container.append(svg.node());*/
 		
+		let model = "A-B4";
+		
+		function setModel(text){
+			let model = text;
+		}
+		
 		d3.csv("pipe_data.csv", function(data){
 				var s = document.createElement("tr");
 				var text = document.createTextNode(data.Name);
 				s.appendChild(text);
 				pipe_container.appendChild(s);
 			} )
+		d3.json("example.json", function(data){
+				if(data.model == model){
+					document.getElementByID("param-charge").innerHTML = data.param_charge;
+				}
+			})
 	</script>
 </body>
 </html>
