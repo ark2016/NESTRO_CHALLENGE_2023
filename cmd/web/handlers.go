@@ -110,7 +110,7 @@ func (app *application) showTable(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
+func (app *application) createTable(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.Header().Set("Allow", http.MethodPost)
 		app.clientError(w, http.StatusMethodNotAllowed)
@@ -118,19 +118,19 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Создаем несколько переменных, содержащих тестовые данные. Мы удалим их позже.
-	Model := "123"
-	ParamCharge := 1
-	ParamQn := 1.1
-	ParamQg := 1.1
-	ParamQv := 1.1
-	P := 1.1
-	T := 1.1
-	ParamFlowRegime := "ewewe"
-	ParamFacticVelocity := 1
-	ParamCriticVelocity := 1
-	ParamCrash := 1
-	ParamLifetime := 1
-	ResidualResource := 1
+	Model := "A-B4"
+	ParamCharge := 56
+	ParamQn := 8.6
+	ParamQg := 8.6
+	ParamQv := 8.6
+	P := 8.6
+	T := 8.6
+	ParamFlowRegime := "\u0430\u043d\u0442\u0438\u043a\u043e\u0440\u0440\u043e\u0437\u0438\u0439\u043d\u044b\u0439"
+	ParamFacticVelocity := 10
+	ParamCriticVelocity := 15
+	ParamCrash := 36
+	ParamLifetime := 16
+	ResidualResource := 10
 
 	// Передаем данные в метод SnippetModel.Insert(), получая обратно
 	// ID только что созданной записи в базу данных.
