@@ -6,7 +6,6 @@ import (
 	"html/template"
 	"nestroh/pkg/models"
 	"net/http"
-	"strconv"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -52,8 +51,8 @@ func (app *application) home2(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err) // Использование помощника serverError()
 	}
 
-	id := 0
-	s, err := app.trunks.Get(id)
+	model := "123"
+	s, err := app.trunks.Get(model)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)
@@ -74,13 +73,16 @@ func (app *application) home2(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) showTable(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
-	if err != nil || id < 1 {
-		app.notFound(w)
-		return
-	}
+	model := r.URL.Query().Get("model")
+	/*
+		if err != nil || id < 1 {
+			app.notFound(w)
+			return
+		}
 
-	s, err := app.trunks.Get(id)
+	*/
+
+	s, err := app.trunks.Get(model)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)
@@ -116,7 +118,11 @@ func (app *application) createTable(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
+	/*
+		http://www.jetsource.ru/scripts/javascript_jquery/otpravka_post_i_get_zaprosov
 
+		надо почитать
+	*/
 	// Создаем несколько переменных, содержащих тестовые данные. Мы удалим их позже.
 	Model := "A-B4"
 	ParamCharge := 56
@@ -145,6 +151,7 @@ func (app *application) createTable(w http.ResponseWriter, r *http.Request) {
 		ParamCrash,
 		ParamLifetime,
 		ResidualResource)
+
 	if err != nil {
 		app.serverError(w, err)
 		return
