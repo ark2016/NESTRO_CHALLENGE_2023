@@ -39,9 +39,13 @@
         <tr style="height:500px">
             <td>
                 Таблица труб
-                <table id = "pipe_container">
-
-                </table>
+                <p> <form action="" method= "GET">
+					<select name=model id = "pipe_container">
+						<option value="123">ТЕст</option>
+					</select>
+					<p><input type="submit" value="Отправить"></p>
+				</form>
+				</p>
             </td>
             <td id= "data_container">
                 <a>Модель: {{.Trunk.Model}}</a>
@@ -139,5 +143,16 @@
 <script src="/static/js/animation.js" type="text/javascript"></script>
 <script src="/static/js/navbar.js" type="text/javascript"></script>
 
+<script type="module">
+		import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+		
+		d3.csv("pipe_data.csv", function(data){
+				var s = document.createElement("option");
+				s.value = data.Name;
+				var text = document.createTextNode(data.Name);
+				s.appendChild(text);
+				pipe_container.appendChild(s);
+			} )
+	</script>
 </body>
 </html>
