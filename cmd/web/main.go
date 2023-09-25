@@ -10,8 +10,6 @@ import (
 	"os"
 )
 
-// web сервер запускается из файла server.go
-
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
@@ -19,7 +17,7 @@ type application struct {
 }
 
 func main() {
-	addr := flag.String("addr", ":4000", "Сетевой адрес веб-сервера")
+	addr := flag.String("addr", ":80", "Сетевой адрес веб-сервера")
 	// Определение нового флага из командной строки для настройки MySQL подключения.
 	dsn := flag.String("dsn", "web:web00top@/hack?parseTime=true", "Название MySQL источника данных")
 	flag.Parse()
@@ -98,11 +96,10 @@ go get -u github.com/foo/bar
 далить пакет из Golang?
 $ go get github.com/foo/bar@none
 
-
+создание пользвоателя web
 
 GRANT SELECT, INSERT, UPDATE ON hack.* TO 'web'@'localhost';
 
--- Важно: Не забудьте заменить 'pass' на свой пароль, иначе это и будет паролем.
 ALTER USER 'web'@'localhost' IDENTIFIED BY 'web00top';
 
 
