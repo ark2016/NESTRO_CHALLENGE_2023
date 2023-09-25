@@ -447,3 +447,4 @@ def assessing_possibility_of_accident(n, K:list, ro_max, sigma_ct) -> float:
     P_n = sigma_ct - sigma
     return P_n
 
+#мб 37 c средняя глубина коррозионного поражения трубопровода
