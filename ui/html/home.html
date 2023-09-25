@@ -31,10 +31,12 @@
 	<table style="width:100%">
 		<tr style="height=500px">
 			<td>
-				Таблица труб
-				<table id = "pipe_container">
+				<p>Таблица труб</p>
+				<p>
+				<select id = "pipe_container">
 
-				</table>
+				</select>
+				</p>
 			</td>
 			<td id= "data_container">
 				Красивая таблица
@@ -142,16 +144,16 @@
 		}
 		
 		d3.csv("pipe_data.csv", function(data){
-				var s = document.createElement("tr");
+				var s = document.createElement("option");
 				var text = document.createTextNode(data.Name);
 				s.appendChild(text);
 				pipe_container.appendChild(s);
 			} )
-		d3.json("example.json", function(data){
+		/*d3.json("example.json", function(data){
 				if(data.model == model){
 					document.getElementByID("param-charge").innerHTML = data.param_charge;
 				}
-			})
+			})*/
 	</script>
 </body>
 </html>
