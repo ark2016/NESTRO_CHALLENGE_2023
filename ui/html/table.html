@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Таблица</title>
+
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <link rel="stylesheet" href="/static/css/animation.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    </head>
+</head>
+<body>
+<div id="navbar">
+    <a href="/" class="underline-one">Главная</a>
+    <a href="/table" class="underline-one">Таблица</a>
+    <a href="/table?model=123" class="underline-one">Таблица 123</a>
+</div>
+<div >
+<p>
+    Параметры:
+
+    Model, ParamCharge, ParamQn,
+    ParamQg,
+    ParamQv,
+    P,
+    T,
+    ParamFlowRegime,
+    ParamFacticVelocity,
+    ParamCriticVelocity,
+    ParamCrash,
+    ParamLifetime,
+    ResidualResource
+</p>
+<div class="element-animation" >
+    <table style="width:100%">
+        <tr style="height:500px">
+            <td>
+                Таблица труб
+                <table id = "pipe_container">
+
+                </table>
+            </td>
+            <td id= "data_container">
+                <a>Модель: {{.Trunk.Model}}</a>
+                <table>
+                    <th>
+                    <td>
+                        Режим работы трубы
+                        <div id='param_flow_regime'>{{.Trunk.ParamFlowRegime}}</div>
+                    </td>
+                    </th>
+                    <tr>
+
+                        <td>
+                            Загрузка
+                            <div id='param_charge'>{{.Trunk.ParamCharge}}</div>
+                        </td>
+                        <td>
+                            Qн
+                            <div id='param-Qn'>{{.Trunk.ParamQn}}</div>
+                        </td>
+                        <td>
+                            Qг
+                            <div id='param-Qg'>{{.Trunk.ParamQg}}</div>
+                        </td>
+                        <td>
+                            Qв
+                            <div id='param-Qv'>{{.Trunk.ParamQv}}</div>
+                        </td>
+                        <td>
+                            Р
+                            <div id='param-R'>{{.Trunk.P}}</div>
+                        </td>
+                        <td>
+                            т
+                            <div id='param-T'>{{.Trunk.T}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Фактическая скорость потока
+                            <div id='param-factic_velocity'>{{.Trunk.ParamFacticVelocity}}</div>
+                        </td>
+                        <td>
+                            Критическая скорость перехода в расслоенный поток
+                            <div id='param-critic_velocity'>{{.Trunk.ParamCriticVelocity}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Процент накопленного износа
+                            <div id='param-crash'>{{.Trunk.ParamCrash}}</div>
+                        </td>
+                        <td>
+                            Остаточный ресурс, годы
+                            <div id='param-lifetime'>{{.Trunk.ParamLifetime}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="element-animation">
+    <span>Элемент, который появляется</span>
+</div>
+<div class="element-animation">
+    <span>Элемент, который появляется</span>
+    <p>23132341234</p>
+</div>
+    <div>
+        <p class="element-animation">
+            Моделирование состояния труб является важным аспектом в различных областях,
+            таких как инженерия, наука о материалах, нефтегазовая промышленность и другие.
+            Это позволяет оценить работоспособность трубных систем, предсказать поведение материалов и
+            обнаружить потенциальные проблемы, такие как износ, коррозия или разрушение.
+        </p>
+
+          <p class="element-animation">
+              Одним из основных методов моделирования состояния труб является
+              использование физических моделей и математических уравнений, которые описывают
+              взаимодействие различных факторов, влияющих на состояние трубы. Например, модели
+              могут учитывать физические свойства
+              материалов, давление, температуру, скорость потока и другие параметры.
+          </p>
+<p class="element-animation">
+    Кроме того, с развитием компьютерных технологий и численных методов, стали использоваться численные модели, например, метод конечных элементов, чтобы проводить сложные расчеты и симуляции поведения трубных систем. Это позволяет получать более точные результаты и предсказывать состояние труб при различных условиях работы.
+
+    Моделирование состояния труб имеет практическое применение, например, позволяет оптимизировать процессы эксплуатации трубопроводов, планировать техническое обслуживание и ремонт, повышать безопасность и надежность работы системы. Оно играет важную роль в предотвращении аварий и минимизации потенциального воздействия разрушения труб на окружающую среду.
+</p>
+
+    </div>
+</div>
+
+<script src="/static/js/animation.js" type="text/javascript"></script>
+<script src="/static/js/navbar.js" type="text/javascript"></script>
+
+</body>
+</html>

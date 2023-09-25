@@ -1,51 +1,162 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"html/template"
-	"log"
+	"nestroh/pkg/models"
 	"net/http"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-	// Проверяется, если текущий путь URL запроса точно совпадает с шаблоном "/". Если нет, вызывается
-	// функция http.NotFound() для возвращения клиенту ошибки 404.
-	// Важно, чтобы мы завершили работу обработчика через return. Если мы забудем про "return", то обработчик
-	// продолжит работу и выведет сообщение "Привет из SnippetBox" как ни в чем не бывало.
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		app.notFound(w) // Использование помощника notFound()
 		return
 	}
-	// Инициализируем срез содержащий пути к двум файлам. Обратите внимание, что
-	// файл home.page.tmpl должен быть *первым* файлом в срезе.
+
 	files := []string{
 		"./ui/html/home.html",
 	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err) // Использование помощника serverError()
+		return
+	}
+
+	err = ts.Execute(w, nil)
+	if err != nil {
+		app.serverError(w, err) // Использование помощника serverError()
+	}
+}
+
+func (app *application) home2(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/home2" {
+		app.notFound(w) // Использование помощника notFound()
+		return
+	}
+
+	files := []string{
+		"./ui/html/table.html",
+	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err) // Использование помощника serverError()
+		return
+	}
+
+	err = ts.Execute(w, nil)
+	if err != nil {
+		app.serverError(w, err) // Использование помощника serverError()
+	}
+
+	model := "123"
+	s, err := app.trunks.Get(model)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	// Создаем экземпляр структуры templateData, содержащей данные заметки.
+	data := &templateData{Trunk: s}
+	// Передаем структуру templateData в качестве данных для шаблона.
+	err = ts.Execute(w, data)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+}
+
+func (app *application) showTable(w http.ResponseWriter, r *http.Request) {
+	model := r.URL.Query().Get("model")
 	/*
-		files = []string{
-			"./ui/html/home.page.tmpl",
-			"./ui/html/base.layout.tmpl",
-			"./ui/html/footer.partial.tmpl",
+		if err != nil || id < 1 {
+			app.notFound(w)
+			return
 		}
 
 	*/
 
-	// Используем функцию template.ParseFiles() для чтения файлов шаблона.
-	// Если возникла ошибка, мы запишем детальное сообщение ошибки и
-	// используя функцию http.Error() мы отправим пользователю
-	// ответ: 500 Internal Server Error (Внутренняя ошибка на сервере)
-	ts, err := template.ParseFiles(files...)
+	s, err := app.trunks.Get(model)
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
 		return
 	}
 
-	// Затем мы используем метод Execute() для записи содержимого
-	// шаблона в тело HTTP ответа. Последний параметр в Execute() предоставляет
-	// возможность отправки динамических данных в шаблон.
-	err = ts.Execute(w, nil)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
+	// Создаем экземпляр структуры templateData, содержащей данные заметки.
+	data := &templateData{Trunk: s}
+
+	files := []string{
+		"./ui/html/table.html",
 	}
+
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// Передаем структуру templateData в качестве данных для шаблона.
+	err = ts.Execute(w, data)
+	if err != nil {
+		app.serverError(w, err)
+	}
+}
+
+func (app *application) createTable(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		app.clientError(w, http.StatusMethodNotAllowed)
+		return
+	}
+	/*
+		http://www.jetsource.ru/scripts/javascript_jquery/otpravka_post_i_get_zaprosov
+
+		надо почитать
+	*/
+	// Создаем несколько переменных, содержащих тестовые данные. Мы удалим их позже.
+	Model := "A-B4"
+	ParamCharge := 56
+	ParamQn := 8.6
+	ParamQg := 8.6
+	ParamQv := 8.6
+	P := 8.6
+	T := 8.6
+	ParamFlowRegime := "\u0430\u043d\u0442\u0438\u043a\u043e\u0440\u0440\u043e\u0437\u0438\u0439\u043d\u044b\u0439"
+	ParamFacticVelocity := 10
+	ParamCriticVelocity := 15
+	ParamCrash := 36
+	ParamLifetime := 16
+	ResidualResource := 10
+
+	// Передаем данные в метод SnippetModel.Insert(), получая обратно
+	// ID только что созданной записи в базу данных.
+	id, err := app.trunks.Insert(Model, ParamCharge, ParamQn,
+		ParamQg,
+		ParamQv,
+		P,
+		T,
+		ParamFlowRegime,
+		ParamFacticVelocity,
+		ParamCriticVelocity,
+		ParamCrash,
+		ParamLifetime,
+		ResidualResource)
+
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	// Перенаправляем пользователя на соответствующую страницу заметки.
+	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
 }
