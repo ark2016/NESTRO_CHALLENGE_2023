@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	_ "github.com/go-sql-driver/mysql" // Новый импорт
 	"log"
@@ -18,10 +19,9 @@ type application struct {
 func main() {
 	addr := flag.String("addr", ":80", "Сетевой адрес веб-сервера")
 	// Определение нового флага из командной строки для настройки MySQL подключения.
-	/*
-		dsn := flag.String("dsn", "web:web00top@/hack?parseTime=true", "Название MySQL источника данных")
 
-	*/
+	dsn := flag.String("dsn", "web:web00top@/hack?parseTime=true", "Название MySQL источника данных")
+
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -31,13 +31,10 @@ func main() {
 	// пула соединений в отдельную функцию openDB(). Мы передаем в нее полученный
 	// источник данных (DSN) из флага командной строки.
 
-	/*
-		db, err := openDB(*dsn)
-		if err != nil {
-			errorLog.Fatal(err)
-		}
-
-	*/
+	db, err := openDB(*dsn)
+	if err != nil {
+		errorLog.Fatal(err)
+	}
 
 	// Мы также откладываем вызов db.Close(), чтобы пул соединений был закрыт
 	// до выхода из функции main().
@@ -47,7 +44,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
-		//trunks:   &mysql.TrunkModel{DB: db},
+		trunks:   &mysql.TrunkModel{DB: db},
 	}
 
 	srv := &http.Server{
@@ -60,11 +57,10 @@ func main() {
 	// Поскольку переменная `err` уже объявлена в приведенном выше коде, нужно
 	// использовать оператор присваивания =
 	// вместо оператора := (объявить и присвоить)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	errorLog.Fatal(err)
 }
 
-/*
 // Функция openDB() обертывает sql.Open() и возвращает пул соединений sql.DB
 // для заданной строки подключения (DSN).
 func openDB(dsn string) (*sql.DB, error) {
@@ -89,8 +85,6 @@ func openDB(dsn string) (*sql.DB, error) {
 	db.SetMaxIdleConns(5)
 	return db, nil
 }
-
-*/
 
 /*
 
