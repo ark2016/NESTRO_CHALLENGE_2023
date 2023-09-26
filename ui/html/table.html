@@ -39,13 +39,14 @@
         <tr style="height:500px">
             <td>
                 Таблица труб
-                <p> <form action="" method= "GET" multiple=true>
-					<select name=model id = "pipe_container" size="10" style="width:100%">
-						<!--<option value="0">-</option>-->
-					</select>
-					<p><input type="submit" value="Отправить" style="width:100%"></p>
-				</form>
-				</p>
+                <span class="custom-dropdown">
+					<form action="" method= "GET" multiple=true>
+						<select name=model id = "pipe_container" size="10" style="width:100%; background: #2980b9" >
+							<!--<option value="0">-</option>-->
+						</select>
+						<p><button type="submit"  class="btn btn-outline-primary btn-lg btn-block">Загрузить данные</button></p>
+					</form>
+				</span>
             </td>
             <td id= "data_container">
                 <a>Модель: {{.Trunk.Model}}</a>
@@ -154,6 +155,16 @@
 				s.appendChild(text);
 				pipe_container.appendChild(s);
 			} )
+			
+		$('form').on('submit',function(e){
+		  e.preventDefault();
+		  var but = $(this).find('[type="submit"]').toggleClass('sending').blur();
+		  
+		  setTimeout(function(){
+			 but.removeClass('sending').blur();
+		  },4500);
+		  
+		})
 	</script>
 </body>
 </html>
