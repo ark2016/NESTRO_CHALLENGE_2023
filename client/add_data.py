@@ -33,14 +33,14 @@ for i in range(len(names)):
     param_P = average_pressure_in_area(P_start[i], P_end[i])
     param_T = np.mean(T_cp_n, P_cp_k)
     param_flow_regime = ""
-    param_critic_velocity = get_v_kr()
+    param_critic_velocity = get_v_kr(nu_v, diameter[i]) #заполнено?
 
-    if existence_of_anti_corrosion_regime():
+    if existence_of_anti_corrosion_regime(mu_h=,n=,D=,beta=,ro_n=,ro_v=997,mu_np=,v_n=):
         param_flow_regime += "антикоррозионный"
     else:
         param_flow_regime += "неантикоррозионный"
 
-    param_critic_velocity_param_factic_velocity = dependence_of_critical_flow_velocity()
+    param_critic_velocity_param_factic_velocity = dependence_of_critical_flow_velocity(ro_v=ro_v)
 
     if param_critic_velocity > param_critic_velocity_param_factic_velocity:
         param_flow_regime += " ламинарный"
