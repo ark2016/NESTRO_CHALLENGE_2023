@@ -31,7 +31,11 @@ for i in range(len(names)):
     param_charge = None
     param_P = average_pressure_in_area(P_start[i], P_end[i])
     param_T = np.mean(T_cp_n, P_cp_k)
-    param_flow_regime = None
+    param_flow_regime = ""
+    if existence_of_anti_corrosion_regime():
+        param_flow_regime += "антикоррозионный"
+    else:
+        param_flow_regime += "неантикоррозионный"
     param_critic_velocity_param_factic_velocity = None
     transition = None
     param_critic_velocity = None
