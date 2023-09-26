@@ -10,18 +10,18 @@ var ErrNoRecord = errors.New("models: подходящей записи не н�
 type Trunk struct {
 	ID                  int
 	Model               string
-	ParamCharge         int
+	ParamCharge         float64
 	ParamQn             float64
-	ParamQg             float64
+	ParamQg             string
 	ParamQv             float64
 	P                   float64
 	T                   float64
 	ParamFlowRegime     string
-	ParamFacticVelocity int
-	ParamCriticVelocity int
-	ParamCrash          int
-	ParamLifetime       int
-	ResidualResource    int
+	ParamFacticVelocity float64
+	ParamCriticVelocity float64
+	ParamCrash          float64
+	ParamLifetime       float64
+	ResidualResource    float64
 	Created             time.Time
 }
 
