@@ -74,41 +74,49 @@ func (app *application) home2(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) showTable(w http.ResponseWriter, r *http.Request) {
 	model := r.URL.Query().Get("model")
-	/*
-		if err != nil || id < 1 {
-			app.notFound(w)
+	if model != "0" {
+		s, err := app.trunks.Get(model)
+		if err != nil {
+			if errors.Is(err, models.ErrNoRecord) {
+				app.notFound(w)
+			} else {
+				app.serverError(w, err)
+			}
+			return
+		}
+		// Создаем экземпляр структуры templateData, содержащей данные заметки.
+		data := &templateData{Trunk: s}
+
+		files := []string{
+			"./ui/html/table.html",
+		}
+
+		ts, err := template.ParseFiles(files...)
+		if err != nil {
+			app.serverError(w, err)
 			return
 		}
 
-	*/
-
-	s, err := app.trunks.Get(model)
-	if err != nil {
-		if errors.Is(err, models.ErrNoRecord) {
-			app.notFound(w)
-		} else {
+		// Передаем структуру templateData в качестве данных для шаблона.
+		err = ts.Execute(w, data)
+		if err != nil {
 			app.serverError(w, err)
 		}
-		return
-	}
+	} else {
+		files := []string{
+			"./ui/html/table_start.html",
+		}
 
-	// Создаем экземпляр структуры templateData, содержащей данные заметки.
-	data := &templateData{Trunk: s}
+		ts, err := template.ParseFiles(files...)
+		if err != nil {
+			app.serverError(w, err) // Использование помощника serverError()
+			return
+		}
 
-	files := []string{
-		"./ui/html/table.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	// Передаем структуру templateData в качестве данных для шаблона.
-	err = ts.Execute(w, data)
-	if err != nil {
-		app.serverError(w, err)
+		err = ts.Execute(w, nil)
+		if err != nil {
+			app.serverError(w, err) // Использование помощника serverError()
+		}
 	}
 }
 
@@ -158,5 +166,5 @@ func (app *application) createTable(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Перенаправляем пользователя на соответствующую страницу заметки.
-	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/table?model=%d", id), http.StatusSeeOther)
 }

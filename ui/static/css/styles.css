@@ -1,10 +1,13 @@
 body {
-    margin: 0;
+    margin: 10px;
     background-color: #f1f1f1;
     font-family: Arial, Helvetica, sans-serif;
 }
-
+div{
+    width: 100%;
+}
 #navbar {
+    margin-bottom: 500px;
     background-color: #333;
     position: fixed;
     top: 0;
@@ -18,9 +21,9 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 15px;
+    padding: 25px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 20px;
 }
 
 #navbar a:hover {
@@ -28,19 +31,38 @@ body {
     color: black;
 }
 
-h1 {
+h1{
     color: darkslategray;
     font-family: verdana; /* шрифт текста */
-    font-size: 250%;
+    font-size: 280%;
+    width: 100%;
 }
 
+h2{
+    color: darkslategray;
+    font-family: verdana; /* шрифт текста */
+    font-size: 200%;
+    width: 100%;
+    margin-top: 60px;
+    margin-left: 30px;
+}
+
+h3{
+    color: darkslategray;
+    font-family: verdana; /* шрифт текста */
+    font-size: 120%;
+    width: 100%;
+    margin-top: 30px;
+    margin-left: 30px;
+}
 p  {
     color: darkslategray;
     font-family: courier;
     font-size: 160%;
     /* border: 10px solid powderblue; /* граница элемента */
-    padding: 30px; /* определяет отступ (пробел) между текстом и границей */
-    margin: 50px; /* определяет поле (пробел) за пределами границы */
+    /*padding: 30px; /* определяет отступ (пробел) между текстом и границей */
+    /*margin: 50px; /* определяет поле (пробел) за пределами границы */
+    margin-left: 30px;
     text-align: left; /* определяет выравнивание */
 }
 
@@ -130,8 +152,11 @@ table{
     height: 300px;
 }
 
-th, table{
-    border: 1px solid black
+th{
+    margin: 10px;
+}
+table{
+    border: 1px solid black;
 }
 
 ul {
@@ -162,3 +187,176 @@ li a:hover:not(.active) {
     color: white;
 }
 
+/* Custom dropdown */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px; /* demo only */
+}
+
+.custom-dropdown select {
+  background-color: #1abc9c;
+  color: #fff;
+  font-size: inherit;
+  padding: .5em;
+  padding-right: 2.5em;	
+  border: 0;
+  margin: 0;
+  border-radius: 3px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -webkit-appearance: button; /* hide default arrow in chrome OSX */
+}
+
+.custom-dropdown::before,
+.custom-dropdown::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.custom-dropdown::after { /*  Custom dropdown arrow */
+  content: "\25BC";
+  height: 1em;
+  font-size: .625em;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.custom-dropdown::before { /*  Custom dropdown arrow cover */
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 3px 3px 0;
+}
+
+.custom-dropdown select[disabled] {
+  color: rgba(0,0,0,.3);
+}
+
+.custom-dropdown select[disabled]::after {
+  color: rgba(0,0,0,.1);
+}
+
+.custom-dropdown::before {
+  background-color: rgba(0,0,0,.15);
+}
+
+.custom-dropdown::after {
+  color: rgba(0,0,0,.4);
+}
+form{
+  display: block;
+  width: 100%;
+}
+
+
+.custom-btn {
+    width: 350px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 60%;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+.btn-16 {
+    border: none;
+    color: darkslategray;
+    z-index: 1;
+}
+.btn-16:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    direction: rtl;
+    z-index: -1;
+    box-shadow:
+            -7px -7px 20px 0px #fff9,
+            -4px -4px 5px 0px #fff9,
+            7px 7px 20px 0px #0002,
+            4px 4px 5px 0px #0001;
+    transition: all 0.3s ease;
+}
+.btn-16:hover {
+    color: #000;
+}
+.btn-16:hover:after {
+    left: auto;
+    right: 0;
+    width: 100%;
+}
+.btn-16:active {
+    top: 2px;
+}
+
+
+.button_123 {
+    position: relative;
+    content: '';
+    right: 16px;
+    top: 50%;
+    margin-top: -12px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.5s;
+    animation: 0.8s linear infinite rotate;
+}
+.button_123:before {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    margin-top: -12px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.5s;
+    animation: 0.8s linear infinite rotate;
+  }
+.button_123.sending {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.button_123:before {
+      transition-delay: 0.5s;
+      transition-duration: 1s;
+      opacity: 1;
+    }
+
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -26,69 +26,69 @@
             <tr style>
                 <td>
                     <span class="custom-dropdown">
-					<form action="" method="GET" class="mt-4">
+					<form action="" method="GET" class="mt-4" style="width: 110%">
 						<select name=model id="pipe_container" style="width:100%; background: #2980b9">
 							<!--<option value="0">-</option>-->
 						</select>
 						<p><button type="submit"
-                                   class="button-16">Загрузить данные</button></p>
+                                   class="button_123">Загрузить данные</button></p>
 					</form>
 				</span>
                 </td>
                 <td id="data_container">
-                    <a>Модель: {{.Trunk.Model}}</a>
+                    <a>Модель: -</a>
                     <table>
                         <th>
                         <td>
                             Режим работы трубы
-                            <div id='param_flow_regime'>{{.Trunk.ParamFlowRegime}}</div>
+                            <div id='param_flow_regime'>-</div>
                         </td>
                         </th>
                         <tr>
 
                             <td>
                                 Загрузка
-                                <div id='param_charge'>{{.Trunk.ParamCharge}}</div>
+                                <div id='param_charge'>-</div>
                             </td>
                             <td>
                                 Qн
-                                <div id='param-Qn'>{{.Trunk.ParamQn}}</div>
+                                <div id='param-Qn'>-</div>
                             </td>
                             <td>
                                 Qг
-                                <div id='param-Qg'>{{.Trunk.ParamQg}}</div>
+                                <div id='param-Qg'>-</div>
                             </td>
                             <td>
                                 Qв
-                                <div id='param-Qv'>{{.Trunk.ParamQv}}</div>
+                                <div id='param-Qv'>-</div>
                             </td>
                             <td>
                                 Р
-                                <div id='param-R'>{{.Trunk.P}}</div>
+                                <div id='param-R'>-</div>
                             </td>
                             <td>
                                 т
-                                <div id='param-T'>{{.Trunk.T}}</div>
+                                <div id='param-T'>-</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Фактическая скорость потока
-                                <div id='param-factic_velocity'>{{.Trunk.ParamFacticVelocity}}</div>
+                                <div id='param-factic_velocity'>-</div>
                             </td>
                             <td>
                                 Критическая скорость перехода в расслоенный поток
-                                <div id='param-critic_velocity'>{{.Trunk.ParamCriticVelocity}}</div>
+                                <div id='param-critic_velocity'>-</div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Процент накопленного износа
-                                <div id='param-crash'>{{.Trunk.ParamCrash}}</div>
+                                <div id='param-crash'>-</div>
                             </td>
                             <td>
                                 Остаточный ресурс, годы
-                                <div id='param-lifetime'>{{.Trunk.ParamLifetime}}</div>
+                                <div id='param-lifetime'>-</div>
                             </td>
                         </tr>
                     </table>

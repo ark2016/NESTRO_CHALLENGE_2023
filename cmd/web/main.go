@@ -19,7 +19,9 @@ type application struct {
 func main() {
 	addr := flag.String("addr", ":80", "Сетевой адрес веб-сервера")
 	// Определение нового флага из командной строки для настройки MySQL подключения.
+
 	dsn := flag.String("dsn", "web:web00top@/hack?parseTime=true", "Название MySQL источника данных")
+
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -28,6 +30,7 @@ func main() {
 	// Чтобы функция main() была более компактной, мы поместили код для создания
 	// пула соединений в отдельную функцию openDB(). Мы передаем в нее полученный
 	// источник данных (DSN) из флага командной строки.
+
 	db, err := openDB(*dsn)
 	if err != nil {
 		errorLog.Fatal(err)
@@ -36,7 +39,7 @@ func main() {
 	// Мы также откладываем вызов db.Close(), чтобы пул соединений был закрыт
 	// до выхода из функции main().
 	// Подробнее про defer: https://golangs.org/errors#defer
-	defer db.Close()
+	//defer db.Close()
 
 	app := &application{
 		errorLog: errorLog,
