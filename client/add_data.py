@@ -23,8 +23,8 @@ T_cp_k = df.iloc[:, 57:67]
 P_cp_n = df.iloc[:, 67:77]
 P_cp_k = df.iloc[:, 77:87]
 
-#base=basa("localhost","web","web00top","hack")
-#base.conect_to_database() #соедение с базой
+base=basa("localhost","web","web00top","hack")
+base.conect_to_database() #соедение с базой
 
 for i in range(len(names)):
     name = names[i]
@@ -60,7 +60,7 @@ for i in range(len(names)):
     if param_critic_velocity > param_critic_velocity_param_factic_velocity:
         param_flow_regime += " ламинарный"
     else:
-        param_flow_regime += "Турбулентный"
+        param_flow_regime += " Турбулентный"
 
     param_crash = internal_pressure_pipeline_element_can_withstand(t_n=float(diameter[i].replace(",", ".")),
                                                                    delta_0=float(diameter[i].replace(",", ".")),
@@ -82,23 +82,7 @@ for i in range(len(names)):
     # param_Qv = param_Qv[-1]
     # print(type(param_charge[-1]))
     # print(param_charge[-1])
-    # print(param_T.iloc[-1])
-
-    print(param_T)
-    print(name,
-          param_charge[-1],
-          param_Qn[-1],
-          param_Qg[-1],
-          param_Qv[-1],
-          param_P,
-          param_T,
-          param_flow_regime,
-          param_critic_velocity_param_factic_velocity,
-          param_critic_velocity,
-          param_crash,
-          param_lifetime,
-          0)
-    """
+    print(param_flow_regime)
     base.add_new_trunk(name,
                        param_charge[-1],
                        param_Qn[-1],
@@ -113,7 +97,6 @@ for i in range(len(names)):
                        param_lifetime,
                        0
                        )
-    """
     dictionary = {
         "name": name,
         "param_charge": param_charge,
@@ -135,4 +118,4 @@ for i in range(len(names)):
 
 # print(len(P_cp_k.iloc[0]))
 
-#base.disconect_database() # отсоедение от базы
+base.disconect_database() # отсоедение от базы
