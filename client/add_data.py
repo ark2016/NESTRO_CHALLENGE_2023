@@ -58,9 +58,9 @@ for i in range(len(names)):
                                                                                        beta_in=0.3, mu_v=0.89)
 
     if param_critic_velocity > param_critic_velocity_param_factic_velocity:
-        param_flow_regime += " ламинарный"
+        param_flow_regime += "_ламинарный"
     else:
-        param_flow_regime += " Турбулентный"
+        param_flow_regime += "_турбулентный"
 
     param_crash = internal_pressure_pipeline_element_can_withstand(t_n=float(diameter[i].replace(",", ".")),
                                                                    delta_0=float(diameter[i].replace(",", ".")),
