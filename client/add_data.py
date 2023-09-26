@@ -55,9 +55,17 @@ for i in range(len(names)):
 
     transition = None  # что такое
 
-    param_crash = internal_pressure_pipeline_element_can_withstand()  # Вероятностный расчёт остаточного ресурса с учётом
+    param_crash = internal_pressure_pipeline_element_can_withstand(t_n=diameter[i], delta_0=diameter[i],
+                                                                   delta=(np.mean(t_k) - thickness[i]), R_H_1=100,
+                                                                   m2=0.6, k1=.8, alfa=1,
+                                                                   D_n=diameter[i] + thickness[i] * 2)
+    # Вероятностный расчёт остаточного ресурса с учётом
     # общего коррозионно-зрозненного износа стенки труб
-    param_lifetime = residual_life_of_pipeline()  # годы
+    t_cp = np.mean(t_k)
+    sigma = standard_deviation_sigma(len(t_k), t_k, t_cp)
+    t_min = minimum_possible_wall_thickness(t_cp, sigma, t_k, increased_accuracy=True)
+    v_cp = average_corrosion_rate_of_pipeline_wall(thickness[i], t_min, 10)
+    param_lifetime = residual_life_of_pipeline(t_min,10, v_cp)  # годы
     dictionary = {
         "name": name,
         "param_charge": param_charge,
