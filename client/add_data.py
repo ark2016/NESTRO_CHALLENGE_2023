@@ -76,16 +76,16 @@ for i in range(len(names)):
     t_min = minimum_possible_wall_thickness(t_cp, sigma, t_k, increased_accuracy=True)
     v_cp = average_corrosion_rate_of_pipeline_wall(float(thickness[i].replace(",", ".")), t_min, 10)
     param_lifetime = residual_life_of_pipeline(t_min,10, v_cp)  # годы
-    param_charge = param_charge[-1]
-    param_Qn = param_Qn[-1]
-    param_Qg = param_Qg[-1]
-    param_Qv = param_Qv[-1]
-
+    # param_charge = param_charge[-1]
+    # param_Qn = param_Qn[-1]
+    # param_Qg = param_Qg[-1]
+    # param_Qv = param_Qv[-1]
+    print(param_charge)
     base.add_new_trunk(name,
-                       param_charge,
-                       param_Qn,
-                       param_Qg,
-                       param_Qv,
+                       param_charge[-1],
+                       param_Qn[-1],
+                       param_Qg[-1],
+                       param_Qv[-1],
                        param_P,
                        param_T,
                        param_flow_regime,
