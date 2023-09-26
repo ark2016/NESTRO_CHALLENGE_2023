@@ -23,6 +23,9 @@ T_cp_k = df.iloc[:, 57:67]
 P_cp_n = df.iloc[:, 67:77]
 P_cp_k = df.iloc[:, 77:87]
 
+base=basa("localhost","web","web00top","hack")
+base.conect_to_database() #соедение с базой
+
 for i in range(len(names)):
     name = names[i]
     param_Qn = [Q_n.iloc[i, k] for k in range(len(Q_n.iloc[i]))]
@@ -73,6 +76,21 @@ for i in range(len(names)):
     t_min = minimum_possible_wall_thickness(t_cp, sigma, t_k, increased_accuracy=True)
     v_cp = average_corrosion_rate_of_pipeline_wall(float(thickness[i].replace(",", ".")), t_min, 10)
     param_lifetime = residual_life_of_pipeline(t_min,10, v_cp)  # годы
+
+    base.add_new_trunk(name,
+                       param_charge,
+                       param_Qn,
+                       param_Qg,
+                       param_Qv,
+                       param_P,
+                       param_T,
+                       param_flow_regime,
+                       param_critic_velocity_param_factic_velocity,
+                       param_critic_velocity,
+                       param_crash,
+                       param_lifetime,
+                       0
+                       )
     dictionary = {
         "name": name,
         "param_charge": param_charge,
@@ -91,4 +109,7 @@ for i in range(len(names)):
     # with open("example.json", "w") as outfile:
     #     outfile.write(json_object)
 
+
 # print(len(P_cp_k.iloc[0]))
+
+base.disconect_database() # отсоедение от базы
