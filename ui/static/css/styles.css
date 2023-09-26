@@ -1,5 +1,5 @@
 body {
-    margin: 0;
+    margin: 10px;
     background-color: #f1f1f1;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -152,8 +152,11 @@ table{
     height: 300px;
 }
 
-th, table{
-    border: 1px solid black
+th{
+    margin: 10px;
+}
+table{
+    border: 1px solid black;
 }
 
 ul {
@@ -305,10 +308,23 @@ form{
 }
 
 
-button{
-  position: relative;
-  
-  &:before {
+.button_123 {
+    position: relative;
+    content: '';
+    right: 16px;
+    top: 50%;
+    margin-top: -12px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.5s;
+    animation: 0.8s linear infinite rotate;
+}
+.button_123:before {
     content: '';
     position: absolute;
     right: 16px;
@@ -324,17 +340,17 @@ button{
     transition: opacity 0.5s;
     animation: 0.8s linear infinite rotate;
   }
-  &.sending{
+.button_123.sending {
     pointer-events: none;
     cursor: not-allowed;
-    
-    &:before {
+}
+
+.button_123:before {
       transition-delay: 0.5s;
       transition-duration: 1s;
       opacity: 1;
     }
-  }
-}
+
 
 @keyframes rotate {
   0% {
