@@ -23,7 +23,7 @@ class basa:
         except Error as e:
             print(e)
 
-    def create_new_table(self, name, create_table):
+    def create_new_table(self, name: str, create_table: str):
         create_table_query = """
         CREATE TABLE {}(
             {}
@@ -37,7 +37,7 @@ class basa:
         except Error as e:
             print(e)
 
-    def delete_table(self, name):
+    def delete_table(self, name: str):
         try:
             delete = """
             DROP TABLE {}
@@ -49,36 +49,36 @@ class basa:
         except Error as e:
             print(e)
 
-    def add_new_trunk(self, Model, ParamCharge, ParamQn,
-                      ParamQg,
-                      ParamQv,
-                      P,
-                      T,
-                      ParamFlowRegime,
-                      ParamFacticVelocity,
-                      ParamCriticVelocity,
-                      ParamCrash,
-                      ParamLifetime,
-                      ResidualResource):
+    def add_new_trunk(self,
+                      Model: str,
+                      ParamCharge: int,
+                      ParamQn: float,
+                      ParamQg: float,
+                      ParamQv: float,
+                      P: float,
+                      T: float,
+                      ParamFlowRegime: str,
+                      ParamFacticVelocity: int,
+                      ParamCriticVelocity: int,
+                      ParamCrash: int,
+                      ParamLifetime: int,
+                      ResidualResource: int
+                      ):
         stmt = """INSERT
-                    INTO trunks (Model, ParamCharge, ParamQn, ParamQg, ParamQv,
-                           P,
-                           T,
-                           ParamFlowRegime,
-                           ParamFacticVelocity,
-                           ParamCriticVelocity,
-                           ParamCrash,
-                           ParamLifetime,
-                           ResidualResource, created)
-                    VALUES(%s, %s, %s, %s, %s,
-                    %s,
-                    %s,
-                    %s,
-                    %s,
-                    %s,
-                    %s,
-                    %s,
-                    %s, UTC_TIMESTAMP());"""
+                    INTO trunks (Model, 
+                    ParamCharge, 
+                    ParamQn, 
+                    ParamQg, 
+                    ParamQv,
+                    P,
+                    T,
+                    ParamFlowRegime,
+                    ParamFacticVelocity,
+                    ParamCriticVelocity,
+                    ParamCrash,
+                    ParamLifetime,
+                    ResidualResource, created)
+                    VALUES(%s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s,%s, UTC_TIMESTAMP());"""
 
         try:
             cursor = self._connection.cursor()
@@ -98,7 +98,7 @@ class basa:
         except Error as e:
             print(e)
 
-    def get_trunk(self, Model):
+    def get_trunk(self, Model: str):
         try:
             cursor = self._connection.cursor()
             stmt = """SELECT id, Model, ParamCharge, ParamQn,
@@ -116,12 +116,12 @@ class basa:
 
             cursor.execute(stmt,(Model,))
             row = cursor.fetchone()
-            print(row)
+            return row
 
         except Error as e:
             print(e)
 
-    def delete_all_rows(self, table_name):
+    def delete_all_rows(self, table_name: str):
         delete = """DELETE FROM {}""".format(table_name)
         try:
             cursor = self._connection.cursor()
@@ -131,7 +131,7 @@ class basa:
         except Error as e:
             print(e)
 
-    def print_all_rows(self, table_name):
+    def print_all_rows(self, table_name: str):
         try:
             cur = self._connection.cursor()
             # Reading the Employee data
