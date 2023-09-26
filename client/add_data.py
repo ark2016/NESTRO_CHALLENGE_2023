@@ -29,28 +29,29 @@ for i in range(len(names)):
     param_Qg = [Q_g.iloc[i, k] for k in range(len(Q_g.iloc[i]))]
     # param_Qv = [V_l.iloc[i, k] for k in range(len(V_l.iloc[i]))]
     param_Qv = [i + j for i, j in (param_Qn, param_Qg)]
-    param_charge = None
+    param_charge = [W.iloc[i, k] for k in range(len(W.iloc[i]))]#мб то
     param_P = average_pressure_in_area(P_start[i], P_end[i])
     param_T = np.mean(T_cp_n, P_cp_k)
     param_flow_regime = ""
     param_critic_velocity = get_v_kr()
-    
+
     if existence_of_anti_corrosion_regime():
         param_flow_regime += "антикоррозионный"
     else:
         param_flow_regime += "неантикоррозионный"
 
-    param_critic_velocity_param_factic_velocity = None
+    param_critic_velocity_param_factic_velocity = dependence_of_critical_flow_velocity()
 
     if param_critic_velocity > param_critic_velocity_param_factic_velocity:
         param_flow_regime += " ламинарный"
     else:
         param_flow_regime += "Турбулентный"
 
-    transition = None
+    transition = None#что такое
 
-    param_crash = None
-    param_lifetime = internal_pressure_pipeline_element_can_withstand([thickness], )
+    param_crash = internal_pressure_pipeline_element_can_withstand()#Вероятностный расчёт остаточного ресурса с учётом
+    # общего коррозионно-зрозненного износа стенки труб
+    param_lifetime = residual_life_of_pipeline() #годы
     dictionary = {
         "name": name,
         "param_charge": param_charge,

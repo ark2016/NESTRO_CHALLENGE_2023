@@ -501,3 +501,21 @@ def get_v_kr(n, d) -> float:
     k = R_e_kr
     v_kr = k * n / d
     return v_kr
+
+#зависимость критической скорости потока от основных параметров потока.
+
+def dependence_of_critical_flow_velocity(sigma, ro_v, ro_n, mu_n, beta_b, D, beta_in, mu_v) -> float:
+    """
+    :param sigma: поверхностное натяжение на границе раздела между нефтью и водой, Н/м
+    :param ro_v: плотность воды, кг/м;
+    :param ro_n: плотность нефти, кг/м;
+    :param mu_n: вязкость нефти, мПа/с;
+    :param beta_b: обводненность нефти, доли ед.;
+    :param D: внутренний диаметр нефтепровода, м;
+    :param beta_in: обводненность в точке инверсии фаз, доли ед.
+    :param mu_v: вязкость воды, мПа/с;
+    :return:
+    """
+    w_kr = (.07 * (sigma**.56 * (g * (ro_v - ro_n))**.24) / (D**.21 * ro_n**.19 * mu_n**.61 * (1 - beta_b)**.38) *
+            ((beta_in - beta_b) / beta_in)**(-0.48) * ((3 * mu_v + 3 * mu_n) / (3 * mu_v + 2 * mu_n))**.81)
+    return w_kr
