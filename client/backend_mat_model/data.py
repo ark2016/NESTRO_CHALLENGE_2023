@@ -406,7 +406,8 @@ def get_water_analysis_data_available(n, marr: list, qarr: list) -> float:
     M_cp = MQ / Q
     return M_cp
 
-#Расчет максимальной скорости коррозии
+
+# Расчет максимальной скорости коррозии
 # параметры беруться из таблицы 2 РД 39-0147323-339-89-Р
 def calculation_of_max_corrosion_rate(K_Cl, K_HCO3, K_Ca, K_pH, K_p, K_v_cm, K_v_cm_v_kp) -> float:
     K_x = K_Cl * K_HCO3 * K_Ca * K_pH
@@ -414,23 +415,61 @@ def calculation_of_max_corrosion_rate(K_Cl, K_HCO3, K_Ca, K_pH, K_p, K_v_cm, K_v
     ro_max = K_x * K_r
     return ro_max
 
+
 # Существование антикоррозионного режима 16 c
+def existence_of_anti_corrosion_regime(mu_h, n, D, beta, sigma, ro_n, ro_v, mu_np, v_n) -> bool:
+    """
+    :param v_n: коэффициент кинетической вязкости нефти
+    :param mu_h: динамическая Вязкость безводной дегазированной нефти
+    :param n: доля воды весовая
+    :param D: внутренний диаметр, м
+    :param beta:
+    :param sigma: поверхностное натяжение на границе нефть вода
+    :param ro_n: плотность нефти
+    :param ro_v: плотность воды
+    :param mu_np:
+    :return:
+    """
+    if mu_h <= 25 and n < .3:
+        b = beta / (1 - beta)
+        if 0 < b < 2.72:
+            F_r_kr = .159 / (1 - n) ** 2
+        else:
+            if 2.72 <= b < 7.38 or beta == 0.88:
+                F_r_kr = .02 / (1 - n) ** 2 * b ** 2
+            else:
+                # потом добавить тесты на beta
+                F_r_kr = (23 * b / (1 + b) - 19) * (1 - n) ** (-2)
+        v_kr = (F_r_kr * g * D) ** 0.5
+    else:
+        if mu_h > 25 and n >= .3:
+            ro_e = .8 * ro_n + .2 * ro_v
+            if n < .5:
+                v_c = mu_np / ro_e * 1.8
+            else:
+                v_c = v_b = 10 ** (-6)
+            v_kr = (6.69 * (D ** .268 * sigma ** .171 * abs((ro_v - ro_e) * g) ** .366) /
+                    (v_c ** .073 * ro_e ** .536 * abs(-10.96 * beta ** 2 + 9.94 * beta + 1) ** .659))
+        else:
+            v_kr = 2.44 * (sigma ** 2 * (ro_v - ro_n) * g * D ** .125 /
+                           (ro_n ** 3 * v_n ** 1.125)) ** .205 * e ** (2.22 * beta ** 7.63)
+    return v_kr
 
 
-#Алгоритм расчета
-#среднее давление на участке. Па
+# Алгоритм расчета
+# среднее давление на участке. Па
 
 def average_pressure_in_area(P_n, P_k) -> float:
     P_cp = (P_n - P_k) / 2
     return P_cp
 
 
-#20 c
+# 20 c
 
 
-#Расчет параметров при прогнозировании аварий и отбраковке трубопроводов
-#Для оценки возможности возникновения аварии в n-м году с начала эксплуатации рассчитывается величина
-def assessing_possibility_of_accident(n, K:list, ro_max, sigma_ct) -> float:
+# Расчет параметров при прогнозировании аварий и отбраковке трубопроводов
+# Для оценки возможности возникновения аварии в n-м году с начала эксплуатации рассчитывается величина
+def assessing_possibility_of_accident(n, K: list, ro_max, sigma_ct) -> float:
     """
     :param n: годы эксплуатации
     :param K: коэффициент, учитывающий применение ингибиторов коррозии в 1-м году;
@@ -447,3 +486,18 @@ def assessing_possibility_of_accident(n, K:list, ro_max, sigma_ct) -> float:
     P_n = sigma_ct - sigma
     return P_n
 
+
+#______________________________________________________________________________________________________________________
+#const
+R_e_kr = 2320
+
+def get_v_kr(n, d) -> float:
+    """
+    k: критическим числом Рейнольдса
+    :param n: кинематическому коэффициенту вязкости жидкости
+    :param d: диаметру трубопровода
+    :return:
+    """
+    k = R_e_kr
+    v_kr = k * n / d
+    return v_kr
