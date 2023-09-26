@@ -36,7 +36,7 @@ for i in range(len(names)):
         if type(param_Qv[i]) == "float" and type(param_Qg[i]) == "float":
             param_Qv[i] += param_Qg[i]
     # param_Qv = [j = (param_Qn[i] + param_Qg[i]) for i in range(len(param_Qn))]
-    param_charge = [W.iloc[i, k] for k in range(len(W.iloc[i]))]  # мб то
+    param_charge = [W.iloc[i, k] for k in range(len(W.iloc[i]))]# мб то
     param_P = average_pressure_in_area(float(P_start[i].replace(",", ".")), float(P_end[i].replace(",", ".")))
     param_T = T_cp_n.iloc[i]
     param_flow_regime = ""
@@ -76,6 +76,10 @@ for i in range(len(names)):
     t_min = minimum_possible_wall_thickness(t_cp, sigma, t_k, increased_accuracy=True)
     v_cp = average_corrosion_rate_of_pipeline_wall(float(thickness[i].replace(",", ".")), t_min, 10)
     param_lifetime = residual_life_of_pipeline(t_min,10, v_cp)  # годы
+    param_charge = param_charge[-1]
+    param_Qn = param_Qn[-1]
+    param_Qg = param_Qg[-1]
+    param_Qv = param_Qv[-1]
 
     base.add_new_trunk(name,
                        param_charge,
