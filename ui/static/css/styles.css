@@ -3,8 +3,11 @@ body {
     background-color: #f1f1f1;
     font-family: Arial, Helvetica, sans-serif;
 }
-
+div{
+    width: 100%;
+}
 #navbar {
+    margin-bottom: 500px;
     background-color: #333;
     position: fixed;
     top: 0;
@@ -18,9 +21,9 @@ body {
     display: block;
     color: #f2f2f2;
     text-align: center;
-    padding: 15px;
+    padding: 25px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 20px;
 }
 
 #navbar a:hover {
@@ -28,19 +31,38 @@ body {
     color: black;
 }
 
-h1 {
+h1{
     color: darkslategray;
     font-family: verdana; /* шрифт текста */
-    font-size: 250%;
+    font-size: 280%;
+    width: 100%;
 }
 
+h2{
+    color: darkslategray;
+    font-family: verdana; /* шрифт текста */
+    font-size: 200%;
+    width: 100%;
+    margin-top: 60px;
+    margin-left: 30px;
+}
+
+h3{
+    color: darkslategray;
+    font-family: verdana; /* шрифт текста */
+    font-size: 120%;
+    width: 100%;
+    margin-top: 30px;
+    margin-left: 30px;
+}
 p  {
     color: darkslategray;
     font-family: courier;
     font-size: 160%;
     /* border: 10px solid powderblue; /* граница элемента */
-    padding: 30px; /* определяет отступ (пробел) между текстом и границей */
-    margin: 50px; /* определяет поле (пробел) за пределами границы */
+    /*padding: 30px; /* определяет отступ (пробел) между текстом и границей */
+    /*margin: 50px; /* определяет поле (пробел) за пределами границы */
+    margin-left: 30px;
     text-align: left; /* определяет выравнивание */
 }
 
@@ -228,6 +250,60 @@ form{
   display: block;
   width: 100%;
 }
+
+
+.custom-btn {
+    width: 350px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 60%;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+    7px 7px 20px 0px rgba(0,0,0,.1),
+    4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+.btn-16 {
+    border: none;
+    color: darkslategray;
+    z-index: 1;
+}
+.btn-16:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    direction: rtl;
+    z-index: -1;
+    box-shadow:
+            -7px -7px 20px 0px #fff9,
+            -4px -4px 5px 0px #fff9,
+            7px 7px 20px 0px #0002,
+            4px 4px 5px 0px #0001;
+    transition: all 0.3s ease;
+}
+.btn-16:hover {
+    color: #000;
+}
+.btn-16:hover:after {
+    left: auto;
+    right: 0;
+    width: 100%;
+}
+.btn-16:active {
+    top: 2px;
+}
+
 
 button{
   position: relative;
