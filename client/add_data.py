@@ -80,14 +80,16 @@ for i in range(len(names)):
     # param_Qn = param_Qn[-1]
     # param_Qg = param_Qg[-1]
     # param_Qv = param_Qv[-1]
-    print(param_charge)
+    # print(type(param_charge[-1]))
+    # print(param_charge[-1])
+    # print(param_T.iloc[-1])
     base.add_new_trunk(name,
                        param_charge[-1],
                        param_Qn[-1],
                        param_Qg[-1],
                        param_Qv[-1],
                        param_P,
-                       param_T,
+                       param_T.iloc[-1],
                        param_flow_regime,
                        param_critic_velocity_param_factic_velocity,
                        param_critic_velocity,
